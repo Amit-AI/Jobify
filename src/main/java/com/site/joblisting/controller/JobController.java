@@ -24,7 +24,6 @@ public class JobController {
     @Autowired
     JobDao jobDao;
 
-    //fetches all jobs from DB
     @GetMapping
     public ResponseEntity<List<Job>> getAllJobs() {
         return new ResponseEntity<>(jobDao.getAllPostedJobs(), HttpStatus.OK);

@@ -40,6 +40,7 @@ public class JobController {
         return new ResponseEntity<>("Job inserted successfully!", HttpStatus.OK);
     }
 
+    //updates job
     @PutMapping("/{id}")
     public ResponseEntity<String> update(@PathVariable int id, @RequestBody Job job){
         jobDao.updateJob(id, job);

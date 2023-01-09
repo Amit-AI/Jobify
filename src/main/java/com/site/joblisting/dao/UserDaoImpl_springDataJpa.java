@@ -30,7 +30,7 @@ public class UserDaoImpl_springDataJpa implements UserDao {
 
     @Override
     public User getUserById(int id) {
-        return userRepository.findById(id).orElseThrow(() -> new UserNotFoundException("User Not Found With Id " + id));
+        return userRepository.findById(id).orElseThrow(() -> new UserNotFoundException("User Not Found With ID: " + id));
     }
 
     @Override

@@ -1,5 +1,6 @@
 package com.site.joblisting.entities;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -15,18 +16,27 @@ public class Job {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int jobId;
 
+    @Column(nullable = false)
     private String companyName;
+
+    @Column(nullable = false)
     private String jobRole;
 
     @Lob
+    @Column(nullable = false)
     private String jobLocation;
 
     @Lob
+    @Column(nullable = false)
     private String jobDescription;
 
+    @Column(nullable = false)
     private String jobPosted; // date
+
+    @Column(nullable = false)
     private String jobPostExpires; // date
 
+    @Column(nullable = false)
     private String jobExperienceRequired;
 
     public int getJobId() {

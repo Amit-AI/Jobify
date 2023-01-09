@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import com.site.joblisting.entities.User;
+import com.site.joblisting.exceptions.UserNotFoundException;
 import com.site.joblisting.repositories.UserRepository;
 
 import jakarta.transaction.Transactional;
@@ -29,7 +30,7 @@ public class UserDaoImpl_springDataJpa implements UserDao {
 
     @Override
     public User getUserById(int id) {
-        return userRepository.findById(id).get();
+        return userRepository.findById(id).orElseThrow(() -> new UserNotFoundException("User Not Found With Id " + id));
     }
 
     @Override

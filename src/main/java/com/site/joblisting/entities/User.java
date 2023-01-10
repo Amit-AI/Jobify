@@ -1,13 +1,14 @@
 package com.site.joblisting.entities;
 
-import jakarta.annotation.Nonnull;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
-import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.Size;
 
 @Entity
 @Table(name = "user")
@@ -17,15 +18,23 @@ public class User {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int userId;
 
+    @NotEmpty(message = "Username could not be empty or null")
+    @Size(min = 4, message = "Username could not be less than 4 characters")
     @Column(nullable = false)
     private String userName;
 
+    @NotEmpty(message = "Password could not be empty or null")
     @Column(nullable = false)
+    @Size(min = 4, message = "Password could not be less than 4 characters")
     private String userPwd;
 
+
+    @NotEmpty(message = "Email could not be empty or null.")
+    @Email(message = "Invalid Email address.")
     @Column(nullable = false)
     private String userEmail;
 
+    @NotEmpty(message = "Role could not be empty or null.")
     @Column(nullable = false)
     private String userRole;
 

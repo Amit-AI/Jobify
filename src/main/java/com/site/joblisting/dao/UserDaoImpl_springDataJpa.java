@@ -20,7 +20,11 @@ public class UserDaoImpl_springDataJpa implements UserDao {
 
     @Override
     public void deleteUser(int id) {
-        userRepository.deleteById(id);
+        try {
+            userRepository.deleteById(id);
+        } catch (Exception e) {
+            throw new NotFoundException("User Not Found With ID: " + id);
+        }
     }
 
     @Override
@@ -30,7 +34,8 @@ public class UserDaoImpl_springDataJpa implements UserDao {
 
     @Override
     public User getUserById(int id) {
-        return userRepository.findById(id).orElseThrow(() -> new NotFoundException("User Not Found With ID: " + id));
+        return userRepository.findById(id)
+                .orElseThrow(() -> new NotFoundException("User Not Found With ID: " + id));
     }
 
     @Override
@@ -41,7 +46,8 @@ public class UserDaoImpl_springDataJpa implements UserDao {
 
     @Override
     public void updateUser(int id, User user) {
-        User tempUser = userRepository.findById(id).get();
+        User tempUser = getUserById(id);
+
         tempUser.setUserName(user.getUserName());
         tempUser.setUserPwd(user.getUserPwd());
         tempUser.setUserEmail(user.getUserEmail());

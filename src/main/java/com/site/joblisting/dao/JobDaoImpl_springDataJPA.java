@@ -49,7 +49,6 @@ public class JobDaoImpl_springDataJPA implements JobDao {
         tempJob.setJobRole(job.getJobRole());
         tempJob.setCompanyName(job.getCompanyName());
         tempJob.setJobDescription(job.getJobDescription());
-        tempJob.setJobPosted(job.getJobPosted());
         tempJob.setJobPostExpires(job.getJobPostExpires());
         tempJob.setJobExperienceRequired(job.getJobExperienceRequired());
         tempJob.setJobLocation(job.getJobLocation());

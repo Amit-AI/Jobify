@@ -30,7 +30,7 @@ public class JobController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Job> getJob(@PathVariable int id){
+    public ResponseEntity<Job> getJob(@PathVariable int id) {
         return new ResponseEntity<>(jobDao.getJob(id), HttpStatus.OK);
     }
 
@@ -39,18 +39,17 @@ public class JobController {
         jobDao.insertJob(job);
         return new ResponseEntity<>("Job inserted successfully!", HttpStatus.OK);
     }
-    
+
     @PutMapping("/{id}")
-    public ResponseEntity<String> update(@PathVariable int id, @RequestBody Job job){
+    public ResponseEntity<String> update(@PathVariable int id, @RequestBody Job job) {
         jobDao.updateJob(id, job);
         return new ResponseEntity<>("Job updated successfully!!", HttpStatus.OK);
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<String> deleteJob(@PathVariable int id){
+    public ResponseEntity<String> deleteJob(@PathVariable int id) {
         jobDao.deleteJob(id);
         return new ResponseEntity<>("Job deleted successfully!!", HttpStatus.OK);
     }
-
 
 }

@@ -6,7 +6,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import com.site.joblisting.entities.Job;
+import com.site.joblisting.entities.UserJob;
+import com.site.joblisting.exceptions.NotFoundException;
 import com.site.joblisting.repositories.JobRepository;
+import com.site.joblisting.repositories.UserJobRepository;
 
 import jakarta.transaction.Transactional;
 
@@ -17,9 +20,18 @@ public class JobDaoImpl_springDataJPA implements JobDao {
     @Autowired
     JobRepository jobRepository;
 
+    @Autowired
+    UserJobRepository userJobRepository;
+
     @Override
     public void deleteJob(int id) {
-        jobRepository.deleteById(id);
+        try{
+            jobRepository.deleteById(id);
+        }catch(Exception e){
+            throw new NotFoundException("User Not Found With ID: " + id);
+        }
+
+        userJobRepository.deleteUserWhenJobDeleted(id);
     }
 
     @Override
@@ -57,4 +69,13 @@ public class JobDaoImpl_springDataJPA implements JobDao {
 
     }
 
+    @Override
+    public void applyJob(int userId, int jobId) {
+        UserJob userJob = new UserJob();
+        userJob.setUserId(userId);
+        userJob.setJobId(jobId);
+
+        userJobRepository.save(userJob);
+        
+    }
 }

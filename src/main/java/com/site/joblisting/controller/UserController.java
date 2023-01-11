@@ -15,7 +15,10 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.site.joblisting.dao.JobDao;
 import com.site.joblisting.dao.UserDao;
+import com.site.joblisting.dto.UserJobDTO;
+import com.site.joblisting.entities.Job;
 import com.site.joblisting.entities.User;
 
 @RestController
@@ -24,6 +27,9 @@ public class UserController {
 
     @Autowired
     UserDao userDao;
+
+    @Autowired
+    JobDao jobDao;
 
     @GetMapping
     public ResponseEntity<List<User>> getAllUsers() {
@@ -51,6 +57,15 @@ public class UserController {
     public ResponseEntity<String> deleteUser(@PathVariable int id) {
         userDao.deleteUser(id);
         return new ResponseEntity<>("User deleted successfully!!", HttpStatus.OK);
+    }
+
+    @GetMapping("/jobs/{userId}")
+    public ResponseEntity<UserJobDTO> getUserAppliedJobs(@PathVariable int userId){
+        User user = userDao.getUserById(userId);
+        String userName = user.getUserName();
+        List<Job> jobs = userDao.getAllJobIdByUserId(userId).stream().map(id -> jobDao.getJob(id)).toList();
+
+        return new ResponseEntity<>(new UserJobDTO(userName, jobs), HttpStatus.OK);
     }
 
 }

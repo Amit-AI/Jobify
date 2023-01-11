@@ -11,5 +11,6 @@ public interface UserDao {
     public void insertUser(User user);
     public void updateUser(int id, User user);
     public void deleteUser(int id);
+    public List<Integer> getAllJobIdByUserId(int userId);
     
 }

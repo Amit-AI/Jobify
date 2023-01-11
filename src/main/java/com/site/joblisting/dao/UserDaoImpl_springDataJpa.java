@@ -7,6 +7,7 @@ import org.springframework.stereotype.Repository;
 
 import com.site.joblisting.entities.User;
 import com.site.joblisting.exceptions.NotFoundException;
+import com.site.joblisting.repositories.UserJobRepository;
 import com.site.joblisting.repositories.UserRepository;
 
 import jakarta.transaction.Transactional;
@@ -18,13 +19,24 @@ public class UserDaoImpl_springDataJpa implements UserDao {
     @Autowired
     UserRepository userRepository;
 
+    @Autowired
+    UserJobRepository userJobRepository;
+
+
+
     @Override
     public void deleteUser(int id) {
+
+        //cleaning up jobs which this user applied to
+        userJobRepository.deleteJobWhenUserDeleted(id);
+        
         try {
             userRepository.deleteById(id);
         } catch (Exception e) {
             throw new NotFoundException("User Not Found With ID: " + id);
         }
+        
+        
     }
 
     @Override
@@ -55,6 +67,11 @@ public class UserDaoImpl_springDataJpa implements UserDao {
         System.out.println();
         userRepository.save(tempUser);
 
+    }
+
+    @Override
+    public List<Integer> getAllJobIdByUserId(int userId){
+        return userJobRepository.findAllJobIdByUserId(userId);
     }
 
 }

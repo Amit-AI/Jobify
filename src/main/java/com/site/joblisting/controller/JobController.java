@@ -52,4 +52,9 @@ public class JobController {
         return new ResponseEntity<>("Job deleted successfully!!", HttpStatus.OK);
     }
 
+    @PostMapping("/{userId}/{jobId}")
+    public ResponseEntity<String> applyJob(@PathVariable int userId, @PathVariable int jobId){
+        jobDao.applyJob(userId, jobId);
+        return new ResponseEntity<>("Job applied successfully!!", HttpStatus.CREATED);
+    }
 }

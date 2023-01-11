@@ -11,4 +11,5 @@ public interface JobDao {
     public void insertJob(Job job);
     public void updateJob(int id, Job job);
     public void deleteJob(int id);
+    public void applyJob(int userId, int jobId);
 }

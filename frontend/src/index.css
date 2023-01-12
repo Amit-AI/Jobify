@@ -1,0 +1,13 @@
+*{
+  margin: 0;
+  padding: 0;
+}
+
+.nav_item{
+  text-decoration: none;
+  color: gray;
+}
+
+.nav_item:hover {
+  color: black;
+}

@@ -1,11 +1,13 @@
-import React from "react";
 import axios from "axios";
 import { errorToast, successToast } from "../utils/ToastUtil";
 import { ToastContainer } from "react-toastify";
+import { Container } from "react-bootstrap";
+import { useState } from "react";
 
 const Jobs = () => {
-    const loadData = () => {
-        axios
+    
+    const loadData = async () => {
+        await axios
             .get("http://localhost:8081/job")
             .then(function (response) {
                 // handle success
@@ -18,10 +20,13 @@ const Jobs = () => {
                 errorToast("Something went wrong!");
             });
     };
+
     return (
         <div>
-            <button onClick={loadData}>LoadUserData</button>
-            <ToastContainer />
+            <Container>
+                <button onClick={loadData}>LoadUserData</button>
+                <ToastContainer />
+            </Container>
         </div>
     );
 };

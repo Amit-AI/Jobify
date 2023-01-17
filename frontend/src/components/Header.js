@@ -13,19 +13,23 @@ function Header() {
             display: "Jobs",
             path: "/jobs",
         },
+        {
+            display: "Users",
+            path: "/users"
+        }
     ];
 
     return (
         <div>
-            <Navbar bg="light" expand="lg">
+            <Navbar bg="warning" expand="lg" variant="dark" className="py-3">
                 <Container>
-                    <NavbarBrand href="to">JobListing</NavbarBrand>
+                    <NavbarBrand className="display-1">JobListing</NavbarBrand>
                     <NavbarToggle />
                     <NavbarCollapse>
                         <Nav>
                           {
                             nav_links.map((item, index)=>
-                                <Link><NavLink to={item.path} key={index} className="nav_item">{item.display}</NavLink></Link>
+                                <Link className="h2" key={index}><NavLink to={item.path} key={index} className="nav_item">{item.display}</NavLink></Link>
                             )
                           }
                         </Nav>

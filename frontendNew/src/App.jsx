@@ -5,7 +5,7 @@ import "../src/index.css";
 
 function App() {
     return (
-        <div className="App h-screen bg-emerald-900">
+        <div className="App">
             <Navbar />
             <Form />
             <Footer />

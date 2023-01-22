@@ -1,10 +1,24 @@
 import { useState } from "react";
+import { NavLink } from "react-router-dom";
 
 function Navbar() {
     const [profileOpen, setProfileOpen] = useState(false);
     const [menuOpen, setMenuOpen] = useState(false);
 
-    const navList = ["Dashboard", "Jobs", "Contact"];
+    const navList = [
+        {
+            name: "Dashboard",
+            url: "/",
+        },
+        {
+            name: "Jobs",
+            url: "/jobs",
+        },
+        {
+            name: "Contact",
+            url: "/contact",
+        },
+    ];
 
     const profileMenuList = ["Profile", "Settings", "Sign out"];
 
@@ -18,14 +32,18 @@ function Navbar() {
                     </h1>
                 </div>
                 {/* <!-- mid nav --> */}
-                <div class={`nav-items absolute top-16 -ml-3 -mr-3 -mt-2 h-screen w-full border bg-slate-100 sm:static sm:mx-5 sm:block sm:h-auto sm:border-none sm:bg-transparent ${menuOpen? "": "hidden"}`}>
+                <div
+                    class={`nav-items absolute top-16 -ml-3 -mr-3 -mt-2 h-screen w-full border bg-slate-100 sm:static sm:mt-2 sm:mx-5 sm:block sm:h-auto sm:border-none sm:bg-transparent ${
+                        menuOpen ? "" : "hidden"
+                    }`}
+                >
                     <ul class="divide-y sm:flex sm:justify-center sm:divide-none sm:p-0">
                         {navList.map((item, index) => (
                             <li
                                 key={index}
                                 class="cursor-pointer rounded-md p-2 hover:bg-gray-200 sm:mx-2 sm:px-3"
                             >
-                                {item}
+                                <NavLink to={item.url}>{item.name}</NavLink>
                             </li>
                         ))}
                     </ul>
@@ -47,9 +65,7 @@ function Navbar() {
                     {/* <!-- profile container --> */}
                     <div class="profile-container relative">
                         {/* <!-- profile icon --> */}
-                        <div
-                            class="profile mx-1 cursor-pointer sm:mx-0"
-                        >
+                        <div class="profile mx-1 cursor-pointer sm:mx-0">
                             <svg
                                 xmlns="http://www.w3.org/2000/svg"
                                 fill="none"
@@ -96,7 +112,7 @@ function Navbar() {
                             stroke-width="1.5"
                             stroke="currentColor"
                             class="h-6 w-6"
-                            onClick={()=>setMenuOpen(!menuOpen)}
+                            onClick={() => setMenuOpen(!menuOpen)}
                         >
                             <path
                                 stroke-linecap="round"

@@ -78,4 +78,10 @@ public class JobDaoImpl_springDataJPA implements JobDao {
         userJobRepository.save(userJob);
         
     }
+
+    @Override
+    public List<Job> searchJobs(String query) {
+        
+        return jobRepository.searchJobs(query);
+    }
 }

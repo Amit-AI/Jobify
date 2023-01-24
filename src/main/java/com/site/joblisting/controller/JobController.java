@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.site.joblisting.dao.JobDao;
@@ -58,5 +59,12 @@ public class JobController {
     public ResponseEntity<String> applyJob(@PathVariable int userId, @PathVariable int jobId){
         jobDao.applyJob(userId, jobId);
         return new ResponseEntity<>("Job applied successfully!!", HttpStatus.CREATED);
+    }
+
+    @GetMapping("/search")
+    public ResponseEntity<List<Job>> searchJobs(@RequestParam("query") String query){
+
+        return new ResponseEntity<>(jobDao.searchJobs(query),HttpStatus.OK);
+
     }
 }

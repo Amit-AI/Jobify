@@ -56,15 +56,15 @@ public class JobController {
     }
 
     @PostMapping("/{userId}/{jobId}")
-    public ResponseEntity<String> applyJob(@PathVariable int userId, @PathVariable int jobId){
+    public ResponseEntity<String> applyJob(@PathVariable int userId, @PathVariable int jobId) {
         jobDao.applyJob(userId, jobId);
         return new ResponseEntity<>("Job applied successfully!!", HttpStatus.CREATED);
     }
 
     @GetMapping("/search")
-    public ResponseEntity<List<Job>> searchJobs(@RequestParam("query") String query){
+    public ResponseEntity<List<Job>> searchJobs(@RequestParam("query") String query) {
 
-        return new ResponseEntity<>(jobDao.searchJobs(query),HttpStatus.OK);
+        return new ResponseEntity<>(jobDao.searchJobs(query), HttpStatus.OK);
 
     }
 }

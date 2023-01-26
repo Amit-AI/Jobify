@@ -23,7 +23,7 @@ function Navbar() {
     const profileMenuList = ["Profile", "Settings", "Sign out"];
 
     return (
-        <div className="App">
+        <div className="App fixed top-0 w-full bg-white">
             <nav class="relative flex items-center justify-between p-3 shadow-md sm:p-4">
                 {/* <!-- left nav --> */}
                 <div class="logo">

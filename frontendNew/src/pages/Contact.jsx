@@ -1,7 +1,11 @@
-import React from 'react'
+import React from "react";
 
 export default function Contact() {
-  return (
-    <div class="pt-19 flex-1 bg-orange-300">Contact</div>
-  )
+    return (
+        <div class="pt-20 flex-1">
+            <div className="h-full flex flex-col items-center justify-center">
+                Contacts
+            </div>
+        </div>
+    );
 }

@@ -22,6 +22,11 @@ function Navbar() {
 
     const profileMenuList = ["Profile", "Settings", "Sign out"];
 
+    function handleMenuClose() {
+        if (menuOpen) setMenuOpen(false);
+        if (profileOpen) setMenuOpen(false);
+    }
+
     return (
         <div className="Navbar fixed top-0 w-full bg-white">
             <nav class="relative flex items-center justify-between p-3 shadow-md sm:p-4">
@@ -42,7 +47,7 @@ function Navbar() {
                 >
                     <ul class="divide-y sm:flex sm:justify-center sm:divide-none sm:p-0">
                         {navList.map((item, index) => (
-                            <NavLink to={item.url}>
+                            <NavLink to={item.url} onClick={handleMenuClose}>
                                 <li
                                     key={index}
                                     class="cursor-pointer rounded-md p-2 hover:bg-gray-200 sm:mx-2 sm:px-3"

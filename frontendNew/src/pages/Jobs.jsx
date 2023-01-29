@@ -6,7 +6,7 @@ import { useRef } from "react";
 export default function Jobs() {
     const [jobPostData, setJobPostData] = useState([]);
 
-    let query = useRef("")
+    let query = useRef("");
 
     function fetchAllJobs() {
         axios
@@ -30,8 +30,6 @@ export default function Jobs() {
                     console.log(e);
                 });
         }
-
-        console.log(searchTerm)
     }
 
     useEffect(() => {
@@ -39,17 +37,20 @@ export default function Jobs() {
     }, []);
 
     const cardData = {
-        jobRole:"Software Engineer 1",
-        companyName:"Optum",
-        jobExperienceRequired:"1-2",
-        jobLocation:"Gurugram, India",
-        jobPosted:"01-01-2023",
-        jobPostExpires:"01-02-2023"
-    }
+        jobRole: "Software Engineer 1",
+        companyName: "Optum",
+        jobExperienceRequired: "1-2",
+        jobLocation: "Gurugram, India",
+        jobPosted: "01-01-2023",
+        jobPostExpires: "01-02-2023",
+    };
 
     return (
-        <Fragment>
-            <form class="search-bar w-4/5 md:w-full flex items-center justify-center mt-28 max-w-3xl mx-auto" onSubmit={fetchSearchJobs}>
+        <Fragment className="h-full">
+            <form
+                class="search-bar w-[80%] lg:w-full flex items-center justify-center mt-28 max-w-3xl mx-auto"
+                onSubmit={fetchSearchJobs}
+            >
                 <div class="flex border-2 rounded w-full">
                     <input
                         type="text"
@@ -69,17 +70,24 @@ export default function Jobs() {
                     </button>
                 </div>
             </form>
-            <div className="container my-10 mx-auto px-4 md:px-12 flex flex-wrap sm:flex-col sm:items-center">
+            <div className=" w-[90%] sm:container my-10 mx-auto px-4 md:px-12 flex flex-col sm:items-center">
                 {jobPostData?.map((item, index) => (
                     <JobCard key={index} jobPost={item} />
                 ))}
 
-                <JobCard jobPost={cardData}/>
-                <JobCard jobPost={cardData}/>
-                <JobCard jobPost={cardData}/>
-                <JobCard jobPost={cardData}/>
-                <JobCard jobPost={cardData}/>
-                <JobCard jobPost={cardData}/>
+                {/* <JobCard jobPost={cardData} />
+                <JobCard jobPost={cardData} />
+                <JobCard jobPost={cardData} />
+                <JobCard jobPost={cardData} />
+                <JobCard jobPost={cardData} />
+                <JobCard jobPost={cardData} /> */}
+
+                {/* if no data from server, below dummy data will be shown */}
+                {!jobPostData.length ? (
+                    <p className="text-gray-400">No jobs found</p>
+                ) : (
+                    ""
+                )}
             </div>
         </Fragment>
     );

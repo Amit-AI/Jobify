@@ -3,7 +3,7 @@ import { Fragment } from "react";
 export default function JobCard({ jobPost }) {
     return (
         <Fragment>
-            <div class="card w-full sm:max-w-3xl rounded-2xl border px-3 py-5 shadow-md mb-2 cursor-pointer">
+            <div class="card w-full sm:max-w-3xl rounded-2xl border px-3 py-5 shadow-sm hover:shadow-md mb-4 cursor-pointer">
                 {/* <!-- div-1 --> */}
                 <div class="flex flex-col items-center sm:flex-row sm:items-center">
                     <img
@@ -44,7 +44,7 @@ export default function JobCard({ jobPost }) {
                         <span class="ml-1 text-xs sm:text-sm">
                             {/* 5-10years */}
                             {jobPost.jobExperienceRequired} years
-                            </span>
+                        </span>
                     </div>
                     <div class="mt-1 flex items-center sm:mt-0">
                         <svg

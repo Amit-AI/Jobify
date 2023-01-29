@@ -4,12 +4,11 @@ import Navbar from "./components/Navbar";
 import Router from "./router/Router";
 import "../src/index.css";
 
-
-function App() {    
+function App() {
     return (
         <div className="App h-screen flex flex-col justify-between">
             <Navbar />
-            <Router/>
+            <Router />
             <Footer />
         </div>
     );

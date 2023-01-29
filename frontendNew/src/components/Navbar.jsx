@@ -23,14 +23,17 @@ function Navbar() {
     const profileMenuList = ["Profile", "Settings", "Sign out"];
 
     return (
-        <div className="App fixed top-0 w-full bg-white">
+        <div className="Navbar fixed top-0 w-full bg-white">
             <nav class="relative flex items-center justify-between p-3 shadow-md sm:p-4">
                 {/* <!-- left nav --> */}
-                <div class="logo">
-                    <h1 class="cursor-pointer text-2xl md:text-3xl">
-                        JobListing
-                    </h1>
-                </div>
+                <NavLink to={"/"}>
+                    <div class="logo">
+                        <h1 class="cursor-pointer text-2xl md:text-3xl">
+                            JobListing
+                        </h1>
+                    </div>
+                </NavLink>
+
                 {/* <!-- mid nav --> */}
                 <div
                     class={`nav-items absolute top-16 -ml-3 -mr-3 -mt-2 h-screen w-full border bg-slate-100 sm:static sm:mt-2 sm:mx-5 sm:block sm:h-auto sm:border-none sm:bg-transparent ${
@@ -39,12 +42,14 @@ function Navbar() {
                 >
                     <ul class="divide-y sm:flex sm:justify-center sm:divide-none sm:p-0">
                         {navList.map((item, index) => (
-                            <li
-                                key={index}
-                                class="cursor-pointer rounded-md p-2 hover:bg-gray-200 sm:mx-2 sm:px-3"
-                            >
-                                <NavLink to={item.url}>{item.name}</NavLink>
-                            </li>
+                            <NavLink to={item.url}>
+                                <li
+                                    key={index}
+                                    class="cursor-pointer rounded-md p-2 hover:bg-gray-200 sm:mx-2 sm:px-3"
+                                >
+                                    {item.name}
+                                </li>
+                            </NavLink>
                         ))}
                     </ul>
                 </div>

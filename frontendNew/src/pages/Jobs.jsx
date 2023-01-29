@@ -38,13 +38,22 @@ export default function Jobs() {
         fetchAllJobs();
     }, []);
 
+    const cardData = {
+        jobRole:"Software Engineer 1",
+        companyName:"Optum",
+        jobExperienceRequired:"1-2",
+        jobLocation:"Gurugram, India",
+        jobPosted:"01-01-2023",
+        jobPostExpires:"01-02-2023"
+    }
+
     return (
         <Fragment>
-            <form class="flex items-center justify-center mt-28 max-w-3xl mx-auto" onSubmit={fetchSearchJobs}>
+            <form class="search-bar w-4/5 md:w-full flex items-center justify-center mt-28 max-w-3xl mx-auto" onSubmit={fetchSearchJobs}>
                 <div class="flex border-2 rounded w-full">
                     <input
                         type="text"
-                        class="block px-4 py-2 w-full"
+                        class="block px-4 py-2 w-full focus:outline-none"
                         placeholder="Search..."
                         ref={query}
                     />
@@ -64,6 +73,13 @@ export default function Jobs() {
                 {jobPostData?.map((item, index) => (
                     <JobCard key={index} jobPost={item} />
                 ))}
+
+                <JobCard jobPost={cardData}/>
+                <JobCard jobPost={cardData}/>
+                <JobCard jobPost={cardData}/>
+                <JobCard jobPost={cardData}/>
+                <JobCard jobPost={cardData}/>
+                <JobCard jobPost={cardData}/>
             </div>
         </Fragment>
     );

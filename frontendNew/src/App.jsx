@@ -7,9 +7,9 @@ import "../src/index.css";
 
 function App() {    
     return (
-        <div className="App">
+        <div className="App h-screen flex flex-col justify-between">
             <Navbar />
-            <Router />
+            <Router/>
             <Footer />
         </div>
     );

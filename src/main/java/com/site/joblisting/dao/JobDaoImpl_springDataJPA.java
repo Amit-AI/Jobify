@@ -3,6 +3,8 @@ package com.site.joblisting.dao;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Repository;
 
 import com.site.joblisting.entities.Job;
@@ -25,9 +27,9 @@ public class JobDaoImpl_springDataJPA implements JobDao {
 
     @Override
     public void deleteJob(int id) {
-        try{
+        try {
             jobRepository.deleteById(id);
-        }catch(Exception e){
+        } catch (Exception e) {
             throw new NotFoundException("User Not Found With ID: " + id);
         }
 
@@ -38,6 +40,11 @@ public class JobDaoImpl_springDataJPA implements JobDao {
     public List<Job> getAllPostedJobs() {
 
         return jobRepository.findAll();
+    }
+
+    @Override
+    public Page<Job> getAllPostedJobsWithPagination(int offset, int pageSize) {
+        return jobRepository.findAll(PageRequest.of(offset, pageSize));
     }
 
     @Override
@@ -76,12 +83,12 @@ public class JobDaoImpl_springDataJPA implements JobDao {
         userJob.setJobId(jobId);
 
         userJobRepository.save(userJob);
-        
+
     }
 
     @Override
     public List<Job> searchJobs(String query) {
-        
+
         return jobRepository.searchJobs(query);
     }
 }

@@ -3,6 +3,7 @@ package com.site.joblisting.controller;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -30,6 +31,12 @@ public class JobController {
     @GetMapping
     public ResponseEntity<List<Job>> getAllJobs() {
         return new ResponseEntity<>(jobDao.getAllPostedJobs(), HttpStatus.OK);
+    }
+
+    @GetMapping(params = { "offset", "pageSize" })
+    public ResponseEntity<Page<Job>> getAllJobsWithPagination(@RequestParam int offset,
+            @RequestParam("pageSize") int pageSize) {
+        return new ResponseEntity<>(jobDao.getAllPostedJobsWithPagination(offset, pageSize), HttpStatus.OK);
     }
 
     @GetMapping("/{id}")

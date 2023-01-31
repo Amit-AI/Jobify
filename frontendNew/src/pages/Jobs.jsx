@@ -61,21 +61,21 @@ export default function Jobs() {
     // };
 
     return (
-        <Fragment className="h-full">
+        <Fragment>
             <form
-                class="search-bar w-[80%] lg:w-full flex items-center justify-center mt-28 max-w-3xl mx-auto"
+                className="search-bar w-[80%] lg:w-full flex items-center justify-center mt-28 max-w-3xl mx-auto"
                 onSubmit={fetchSearchJobs}
             >
-                <div class="flex border-2 rounded w-full">
+                <div className="flex border-2 rounded w-full">
                     <input
                         type="text"
-                        class="block px-4 py-2 w-full focus:outline-none"
+                        className="block px-4 py-2 w-full focus:outline-none"
                         placeholder="Search..."
                         ref={query}
                     />
-                    <button class="flex items-center justify-center px-4 border-l">
+                    <button className="flex items-center justify-center px-4 border-l">
                         <svg
-                            class="w-6 h-6 text-gray-600"
+                            className="w-6 h-6 text-gray-600"
                             fill="currentColor"
                             xmlns="http://www.w3.org/2000/svg"
                             viewBox="0 0 24 24"

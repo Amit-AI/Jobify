@@ -29,11 +29,11 @@ function Navbar() {
 
     return (
         <div className="Navbar fixed top-0 w-full bg-white">
-            <nav class="relative flex items-center justify-between p-3 shadow-md sm:p-4">
+            <nav className="relative flex items-center justify-between p-3 shadow-md sm:p-4">
                 {/* <!-- left nav --> */}
                 <NavLink to={"/"}>
-                    <div class="logo">
-                        <h1 class="cursor-pointer text-2xl md:text-3xl">
+                    <div className="logo">
+                        <h1 className="cursor-pointer text-2xl md:text-3xl">
                             JobListing
                         </h1>
                     </div>
@@ -41,16 +41,16 @@ function Navbar() {
 
                 {/* <!-- mid nav --> */}
                 <div
-                    class={`nav-items absolute top-16 -ml-3 -mr-3 -mt-2 h-screen w-full border bg-slate-100 sm:static sm:mt-2 sm:mx-5 sm:block sm:h-auto sm:border-none sm:bg-transparent ${
+                    className={`nav-items absolute top-16 -ml-3 -mr-3 -mt-2 h-screen w-full border bg-slate-100 sm:static sm:mt-2 sm:mx-5 sm:block sm:h-auto sm:border-none sm:bg-transparent ${
                         menuOpen ? "" : "hidden"
                     }`}
                 >
-                    <ul class="divide-y sm:flex sm:justify-center sm:divide-none sm:p-0">
+                    <ul className="divide-y sm:flex sm:justify-center sm:divide-none sm:p-0">
                         {navList.map((item, index) => (
-                            <NavLink to={item.url} onClick={handleMenuClose}>
+                            <NavLink to={item.url} key={index} onClick={handleMenuClose}>
                                 <li
                                     key={index}
-                                    class="cursor-pointer rounded-md p-2 hover:bg-gray-200 sm:mx-2 sm:px-3"
+                                    className="cursor-pointer rounded-md p-2 hover:bg-gray-200 sm:mx-2 sm:px-3"
                                 >
                                     {item.name}
                                 </li>
@@ -59,30 +59,30 @@ function Navbar() {
                     </ul>
                 </div>
                 {/* <!-- right nav --> */}
-                <div class="flex items-center justify-between">
+                <div className="flex items-center justify-between">
                     <button
                         type="button"
-                        class="mr-2 whitespace-nowrap rounded-lg bg-blue-700 px-4 py-2 text-sm font-medium text-white hover:bg-blue-800 focus:outline-none focus:ring-4 focus:ring-blue-300"
+                        className="mr-2 whitespace-nowrap rounded-lg bg-blue-700 px-4 py-2 text-sm font-medium text-white hover:bg-blue-800 focus:outline-none focus:ring-4 focus:ring-blue-300"
                     >
                         Sign up
                     </button>
                     <button
                         type="button"
-                        class="mr-2 hidden whitespace-nowrap rounded-lg border border-blue-700 px-4 py-2 text-sm font-medium text-blue-700 hover:bg-blue-700 hover:text-white focus:outline-none focus:ring-4 focus:ring-blue-300 sm:block"
+                        className="mr-2 hidden whitespace-nowrap rounded-lg border border-blue-700 px-4 py-2 text-sm font-medium text-blue-700 hover:bg-blue-700 hover:text-white focus:outline-none focus:ring-4 focus:ring-blue-300 sm:block"
                     >
                         Sign in
                     </button>
                     {/* <!-- profile container --> */}
-                    <div class="profile-container relative">
+                    <div className="profile-container relative">
                         {/* <!-- profile icon --> */}
-                        <div class="profile mx-1 cursor-pointer sm:mx-0">
+                        <div className="profile mx-1 cursor-pointer sm:mx-0">
                             <svg
                                 xmlns="http://www.w3.org/2000/svg"
                                 fill="none"
                                 viewBox="0 0 24 24"
                                 stroke-width="1.5"
                                 stroke="currentColor"
-                                class="h-6 w-6"
+                                className="h-6 w-6"
                                 onClick={() => setProfileOpen(!profileOpen)}
                             >
                                 <path
@@ -94,18 +94,18 @@ function Navbar() {
                         </div>
                         {/* Profile menu */}
                         <div
-                            class={`profile-menu absolute top-9 -left-24 rounded-md border bg-white text-sm sm:-left-28 ${
+                            className={`profile-menu absolute top-9 -left-24 rounded-md border bg-white text-sm sm:-left-28 ${
                                 profileOpen ? "" : "hidden"
                             }`}
                         >
-                            <p class="bg-slate-200 px-2">name</p>
-                            <p class="bg-slate-200 px-2 pb-1">name@email.com</p>
+                            <p className="bg-slate-200 px-2">name</p>
+                            <p className="bg-slate-200 px-2 pb-1">name@email.com</p>
                             <hr />
                             <ul>
                                 {profileMenuList.map((item, index) => (
                                     <li
                                         key={index}
-                                        class="cursor-pointer px-2 py-1 hover:bg-gray-200"
+                                        className="cursor-pointer px-2 py-1 hover:bg-gray-200"
                                     >
                                         {item}
                                     </li>
@@ -114,14 +114,14 @@ function Navbar() {
                         </div>
                     </div>
                     {/* <!-- burger menu --> */}
-                    <div class="menu-btn mx-1 cursor-pointer flex-row sm:hidden">
+                    <div className="menu-btn mx-1 cursor-pointer flex-row sm:hidden">
                         <svg
                             xmlns="http://www.w3.org/2000/svg"
                             fill="none"
                             viewBox="0 0 24 24"
                             stroke-width="1.5"
                             stroke="currentColor"
-                            class="h-6 w-6"
+                            className="h-6 w-6"
                             onClick={() => setMenuOpen(!menuOpen)}
                         >
                             <path

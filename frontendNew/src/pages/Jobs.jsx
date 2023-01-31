@@ -2,20 +2,34 @@ import JobCard from "../components/JobCard";
 import axios from "axios";
 import { Fragment, useEffect, useState } from "react";
 import { useRef } from "react";
+import Pagination from "../components/Pagination";
 
 export default function Jobs() {
-    const [jobPostData, setJobPostData] = useState([]);
+    const [jobPostData, setJobPostData] = useState({});
+    const [pageNumber, setPageNumber] = useState(0);
 
     let query = useRef("");
 
     function fetchAllJobs() {
         axios
-            .get("http://localhost:8081/job")
+            .get("http://localhost:8081/job", {
+                params: { offset: pageNumber },
+            })
             .then((response) => setJobPostData(response.data))
             .catch((e) => {
                 console.log(e);
             });
     }
+
+    //for pagination purpose
+    let pageData = jobPostData.content?.length
+        ? {
+              currentPage: jobPostData.number,
+              isFirstPage: jobPostData.first,
+              isLastPage: jobPostData.last,
+              totalPages: jobPostData.totalPages,
+          }
+        : null;
 
     function fetchSearchJobs(e) {
         e.preventDefault();
@@ -34,16 +48,17 @@ export default function Jobs() {
 
     useEffect(() => {
         fetchAllJobs();
-    }, []);
+    }, [pageNumber]);
 
-    const cardData = {
-        jobRole: "Software Engineer 1",
-        companyName: "Optum",
-        jobExperienceRequired: "1-2",
-        jobLocation: "Gurugram, India",
-        jobPosted: "01-01-2023",
-        jobPostExpires: "01-02-2023",
-    };
+    //temp card data for testing, remove it
+    // const cardData = {
+    //     jobRole: "Software Engineer 1",
+    //     companyName: "Optum",
+    //     jobExperienceRequired: "1-2",
+    //     jobLocation: "Gurugram, India",
+    //     jobPosted: "01-01-2023",
+    //     jobPostExpires: "01-02-2023",
+    // };
 
     return (
         <Fragment className="h-full">
@@ -71,11 +86,12 @@ export default function Jobs() {
                 </div>
             </form>
             <div className=" w-[90%] sm:container my-10 mx-auto px-4 md:px-12 flex flex-col sm:items-center">
-                {jobPostData?.map((item, index) => (
+                {jobPostData.content?.map((item, index) => (
                     <JobCard key={index} jobPost={item} />
                 ))}
 
-                {/* <JobCard jobPost={cardData} />
+                {/* this is temp data for testing, must be removed
+                <JobCard jobPost={cardData} />
                 <JobCard jobPost={cardData} />
                 <JobCard jobPost={cardData} />
                 <JobCard jobPost={cardData} />
@@ -83,12 +99,14 @@ export default function Jobs() {
                 <JobCard jobPost={cardData} /> */}
 
                 {/* if no data from server, below dummy data will be shown */}
-                {!jobPostData.length ? (
+                {!jobPostData.content?.length ? (
                     <p className="text-gray-400">No jobs found</p>
                 ) : (
                     ""
                 )}
             </div>
+
+            {jobPostData.content?.length? <Pagination pageData={pageData} setPage={setPageNumber}/>: ""}
         </Fragment>
     );
 }

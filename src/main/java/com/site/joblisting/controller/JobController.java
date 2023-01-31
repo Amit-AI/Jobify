@@ -33,10 +33,9 @@ public class JobController {
         return new ResponseEntity<>(jobDao.getAllPostedJobs(), HttpStatus.OK);
     }
 
-    @GetMapping(params = { "offset", "pageSize" })
-    public ResponseEntity<Page<Job>> getAllJobsWithPagination(@RequestParam int offset,
-            @RequestParam("pageSize") int pageSize) {
-        return new ResponseEntity<>(jobDao.getAllPostedJobsWithPagination(offset, pageSize), HttpStatus.OK);
+    @GetMapping(params = { "offset" })
+    public ResponseEntity<Page<Job>> getAllJobsWithPagination(@RequestParam int offset) {
+        return new ResponseEntity<>(jobDao.getAllPostedJobsWithPagination(offset), HttpStatus.OK);
     }
 
     @GetMapping("/{id}")

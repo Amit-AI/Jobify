@@ -10,7 +10,7 @@ public interface JobDao {
 
     public List<Job> getAllPostedJobs();
 
-    public Page<Job> getAllPostedJobsWithPagination(int offset, int pageSize);
+    public Page<Job> getAllPostedJobsWithPagination(int offset);
 
     public Job getJob(int id);
 

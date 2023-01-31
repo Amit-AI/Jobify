@@ -25,6 +25,8 @@ public class JobDaoImpl_springDataJPA implements JobDao {
     @Autowired
     UserJobRepository userJobRepository;
 
+    private static final int pageSize = 2;
+
     @Override
     public void deleteJob(int id) {
         try {
@@ -43,7 +45,7 @@ public class JobDaoImpl_springDataJPA implements JobDao {
     }
 
     @Override
-    public Page<Job> getAllPostedJobsWithPagination(int offset, int pageSize) {
+    public Page<Job> getAllPostedJobsWithPagination(int offset) {
         return jobRepository.findAll(PageRequest.of(offset, pageSize));
     }
 

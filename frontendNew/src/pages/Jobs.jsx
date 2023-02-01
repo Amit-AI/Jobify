@@ -35,20 +35,54 @@ export default function Jobs() {
         e.preventDefault();
 
         let searchTerm = query.current.value;
+        // if (searchTerm) {
+        //     // const url = "http://localhost:8081/job/search?query=" + searchTerm;
+        //     setPageNumber(0);
+        // }
+        axios
+            .get("http://localhost:8081/job/search", {
+                params: { query: searchTerm, offset: pageNumber },
+            })
+            .then((response) => {
+                console.log(response.data);
+                setJobPostData(response.data);
+            })
+            .catch((e) => {
+                console.log(e);
+            });
+    }
+
+    function fetchSearchJobs1() {
+
+        let searchTerm = query.current.value;
         if (searchTerm) {
-            const url = "http://localhost:8081/job/search?query=" + searchTerm;
-            axios
-                .get(url)
-                .then((response) => setJobPostData(response.data))
-                .catch((e) => {
-                    console.log(e);
-                });
+            // const url = "http://localhost:8081/job/search?query=" + searchTerm;
+            setPageNumber(0);
         }
+        axios
+            .get("http://localhost:8081/job/search", {
+                params: { query: searchTerm, offset: pageNumber },
+            })
+            .then((response) => {
+                console.log(response.data);
+                setJobPostData(response.data);
+            })
+            .catch((e) => {
+                console.log(e);
+            });
     }
 
     useEffect(() => {
         fetchAllJobs();
     }, [pageNumber]);
+
+    // useEffect(() => {
+    //     fetchSearchJobs1();
+    // }, [pageNumber]);
+
+    // useEffect(() => {
+    //     fetchSearchJobs();
+    // }, [pageNumber]);
 
     //temp card data for testing, remove it
     // const cardData = {
@@ -106,7 +140,11 @@ export default function Jobs() {
                 )}
             </div>
 
-            {jobPostData.content?.length? <Pagination pageData={pageData} setPage={setPageNumber}/>: ""}
+            {jobPostData.content?.length ? (
+                <Pagination pageData={pageData} setPage={setPageNumber} />
+            ) : (
+                ""
+            )}
         </Fragment>
     );
 }

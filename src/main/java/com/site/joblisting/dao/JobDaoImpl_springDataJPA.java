@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Repository;
 
 import com.site.joblisting.entities.Job;
@@ -89,8 +90,7 @@ public class JobDaoImpl_springDataJPA implements JobDao {
     }
 
     @Override
-    public List<Job> searchJobs(String query) {
-
-        return jobRepository.searchJobs(query);
+    public Page<Job> searchJobs(String query, int offset) {
+        return jobRepository.searchJobs(query, PageRequest.of(offset, pageSize));
     }
 }

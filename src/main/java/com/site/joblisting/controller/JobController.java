@@ -68,9 +68,9 @@ public class JobController {
     }
 
     @GetMapping("/search")
-    public ResponseEntity<List<Job>> searchJobs(@RequestParam("query") String query) {
+    public ResponseEntity<Page<Job>> searchJobs(@RequestParam("query") String query, @RequestParam("offset") int offset) {
 
-        return new ResponseEntity<>(jobDao.searchJobs(query), HttpStatus.OK);
+        return new ResponseEntity<>(jobDao.searchJobs(query, offset), HttpStatus.OK);
 
     }
 }

@@ -1,9 +1,12 @@
 import { useState } from "react";
 import { NavLink } from "react-router-dom";
+import { useAuth } from "./Context";
 
 function Navbar() {
     const [profileOpen, setProfileOpen] = useState(false);
     const [menuOpen, setMenuOpen] = useState(false);
+
+    const AuthContext = useAuth();
 
     const navList = [
         {
@@ -47,7 +50,11 @@ function Navbar() {
                 >
                     <ul className="divide-y sm:flex sm:justify-center sm:divide-none sm:p-0">
                         {navList.map((item, index) => (
-                            <NavLink to={item.url} key={index} onClick={handleMenuClose}>
+                            <NavLink
+                                to={item.url}
+                                key={index}
+                                onClick={handleMenuClose}
+                            >
                                 <li
                                     key={index}
                                     className="cursor-pointer rounded-md p-2 hover:bg-gray-200 sm:mx-2 sm:px-3"
@@ -98,8 +105,13 @@ function Navbar() {
                                 profileOpen ? "" : "hidden"
                             }`}
                         >
-                            <p className="bg-slate-200 px-2">name</p>
-                            <p className="bg-slate-200 px-2 pb-1">name@email.com</p>
+                            <p className="bg-slate-200 px-2">
+                                {AuthContext.username}
+                            </p>{" "}
+                            {/* use useParams hook to get the username from the url, can be done in different ways also*/}
+                            <p className="bg-slate-200 px-2 pb-1">
+                                {AuthContext.email}
+                            </p>
                             <hr />
                             <ul>
                                 {profileMenuList.map((item, index) => (

@@ -1,17 +1,19 @@
-import { useState } from "react";
-import { NavLink } from "react-router-dom";
+import { useState, useRef, useEffect } from "react";
+import { NavLink, useNavigate } from "react-router-dom";
 import { useAuth } from "./Context";
 
 function Navbar() {
     const [profileOpen, setProfileOpen] = useState(false);
     const [menuOpen, setMenuOpen] = useState(false);
 
-    const AuthContext = useAuth();
+    const { username, email, isAuthenticated, logout } = useAuth();
+
+    const navigate = useNavigate();
 
     const navList = [
         {
             name: "Dashboard",
-            url: "/",
+            url: "/dashboard",
         },
         {
             name: "Jobs",
@@ -23,18 +25,21 @@ function Navbar() {
         },
     ];
 
-    const profileMenuList = ["Profile", "Settings", "Sign out"];
-
     function handleMenuClose() {
         if (menuOpen) setMenuOpen(false);
-        if (profileOpen) setMenuOpen(false);
+        if (profileOpen) setProfileOpen(false);
+    }
+
+    function handleLogout() {
+        logout();
+        navigate("/login");
     }
 
     return (
         <div className="Navbar fixed top-0 w-full bg-white">
             <nav className="relative flex items-center justify-between p-3 shadow-md sm:p-4">
                 {/* <!-- left nav --> */}
-                <NavLink to={"/"}>
+                <NavLink to={"/dashboard"}>
                     <div className="logo">
                         <h1 className="cursor-pointer text-2xl md:text-3xl">
                             JobListing
@@ -67,64 +72,87 @@ function Navbar() {
                 </div>
                 {/* <!-- right nav --> */}
                 <div className="flex items-center justify-between">
-                    <button
-                        type="button"
-                        className="mr-2 whitespace-nowrap rounded-lg bg-blue-700 px-4 py-2 text-sm font-medium text-white hover:bg-blue-800 focus:outline-none focus:ring-4 focus:ring-blue-300"
-                    >
-                        Sign up
-                    </button>
-                    <button
-                        type="button"
-                        className="mr-2 hidden whitespace-nowrap rounded-lg border border-blue-700 px-4 py-2 text-sm font-medium text-blue-700 hover:bg-blue-700 hover:text-white focus:outline-none focus:ring-4 focus:ring-blue-300 sm:block"
-                    >
-                        Sign in
-                    </button>
-                    {/* <!-- profile container --> */}
-                    <div className="profile-container relative">
-                        {/* <!-- profile icon --> */}
-                        <div className="profile mx-1 cursor-pointer sm:mx-0">
-                            <svg
-                                xmlns="http://www.w3.org/2000/svg"
-                                fill="none"
-                                viewBox="0 0 24 24"
-                                stroke-width="1.5"
-                                stroke="currentColor"
-                                className="h-6 w-6"
-                                onClick={() => setProfileOpen(!profileOpen)}
+                    {isAuthenticated ? (
+                        <>
+                            <button
+                                type="button"
+                                className="mr-2 hidden whitespace-nowrap rounded-lg border border-blue-700 px-4 py-2 text-sm font-medium text-blue-700 hover:bg-blue-700 hover:text-white focus:outline-none focus:ring-4 focus:ring-blue-300 sm:block"
+                                onClick={handleLogout}
                             >
-                                <path
-                                    stroke-linecap="round"
-                                    stroke-linejoin="round"
-                                    d="M17.982 18.725A7.488 7.488 0 0012 15.75a7.488 7.488 0 00-5.982 2.975m11.963 0a9 9 0 10-11.963 0m11.963 0A8.966 8.966 0 0112 21a8.966 8.966 0 01-5.982-2.275M15 9.75a3 3 0 11-6 0 3 3 0 016 0z"
-                                />
-                            </svg>
-                        </div>
-                        {/* Profile menu */}
-                        <div
-                            className={`profile-menu absolute top-9 -left-24 rounded-md border bg-white text-sm sm:-left-28 ${
-                                profileOpen ? "" : "hidden"
-                            }`}
-                        >
-                            <p className="bg-slate-200 px-2">
-                                {AuthContext.username}
-                            </p>{" "}
-                            {/* use useParams hook to get the username from the url, can be done in different ways also*/}
-                            <p className="bg-slate-200 px-2 pb-1">
-                                {AuthContext.email}
-                            </p>
-                            <hr />
-                            <ul>
-                                {profileMenuList.map((item, index) => (
-                                    <li
-                                        key={index}
-                                        className="cursor-pointer px-2 py-1 hover:bg-gray-200"
+                                Logout
+                            </button>
+                            {/* <!-- profile container --> */}
+                            <div className="profile-container relative">
+                                {/* <!-- profile icon --> */}
+                                <div className="profile mx-1 cursor-pointer sm:mx-0">
+                                    <svg
+                                        xmlns="http://www.w3.org/2000/svg"
+                                        fill="none"
+                                        viewBox="0 0 24 24"
+                                        stroke-width="1.5"
+                                        stroke="currentColor"
+                                        className="h-6 w-6"
+                                        onClick={() =>
+                                            setProfileOpen(!profileOpen)
+                                        }
                                     >
-                                        {item}
-                                    </li>
-                                ))}
-                            </ul>
-                        </div>
-                    </div>
+                                        <path
+                                            stroke-linecap="round"
+                                            stroke-linejoin="round"
+                                            d="M17.982 18.725A7.488 7.488 0 0012 15.75a7.488 7.488 0 00-5.982 2.975m11.963 0a9 9 0 10-11.963 0m11.963 0A8.966 8.966 0 0112 21a8.966 8.966 0 01-5.982-2.275M15 9.75a3 3 0 11-6 0 3 3 0 016 0z"
+                                        />
+                                    </svg>
+                                </div>
+                                {/* Profile menu */}
+                                <div
+                                    className={`profile-menu absolute top-9 -left-24 rounded-md border bg-white text-sm sm:-left-28 ${
+                                        profileOpen ? "" : "hidden"
+                                    }`}
+                                >
+                                    <p className="bg-slate-200 px-2">
+                                        {username}
+                                    </p>{" "}
+                                    <p className="bg-slate-200 px-2 pb-1">
+                                        {email}
+                                    </p>
+                                    <hr />
+                                    <ul>
+                                        <li className="cursor-pointer px-2 py-1 hover:bg-gray-200">
+                                            profile
+                                        </li>
+                                        <li className="cursor-pointer px-2 py-1 hover:bg-gray-200">
+                                            settings
+                                        </li>
+                                        <li
+                                            className="cursor-pointer px-2 py-1 hover:bg-gray-200"
+                                            onClick={handleLogout}
+                                        >
+                                            logout
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>{" "}
+                        </>
+                    ) : (
+                        <>
+                            <NavLink
+                                type="button"
+                                className="mr-2 whitespace-nowrap rounded-lg bg-blue-700 px-4 py-2 text-sm font-medium text-white hover:bg-blue-800 focus:outline-none focus:ring-4 focus:ring-blue-300"
+                                to={"/signup"}
+                            >
+                                Sign up
+                            </NavLink>
+
+                            <NavLink
+                                type="button"
+                                className="mr-2 hidden whitespace-nowrap rounded-lg border border-blue-700 px-4 py-2 text-sm font-medium text-blue-700 hover:bg-blue-700 hover:text-white focus:outline-none focus:ring-4 focus:ring-blue-300 sm:block"
+                                to={"/login"}
+                            >
+                                Sign in
+                            </NavLink>
+                        </>
+                    )}
+
                     {/* <!-- burger menu --> */}
                     <div className="menu-btn mx-1 cursor-pointer flex-row sm:hidden">
                         <svg

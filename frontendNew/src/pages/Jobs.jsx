@@ -1,25 +1,34 @@
 import JobCard from "../components/JobCard";
-import axios from "axios";
 import { Fragment, useEffect, useState } from "react";
-import { useRef } from "react";
 import Pagination from "../components/Pagination";
+import { retrieveAllJobs, retrieveSearchedJobs } from "../api/JobApiService";
 
 export default function Jobs() {
     const [jobPostData, setJobPostData] = useState({});
     const [pageNumber, setPageNumber] = useState(0);
 
-    let query = useRef("");
+    let [query, setQuery] = useState("");
 
-    function fetchAllJobs() {
-        axios
-            .get("http://localhost:8081/job", {
-                params: { offset: pageNumber },
-            })
-            .then((response) => setJobPostData(response.data))
-            .catch((e) => {
-                console.log(e);
-            });
-    }
+    // function fetchJobs(pageNum, searchTerm) {
+    //     retrieveSearchedJobs(searchTerm, pageNum)
+    //         .then((response) => {
+    //             setJobPostData(response.data);
+    //         })
+    //         .catch((e) => {
+    //             console.log(e);
+    //         });
+    // }
+
+    // function fetchAllJobs() {
+    //     axios
+    //         .get("http://localhost:8081/job", {
+    //             params: { offset: pageNumber },
+    //         })
+    //         .then((response) => setJobPostData(response.data))
+    //         .catch((e) => {
+    //             console.log(e);
+    //         });
+    // }
 
     //for pagination purpose
     let pageData = jobPostData.content?.length
@@ -34,55 +43,47 @@ export default function Jobs() {
     function fetchSearchJobs(e) {
         e.preventDefault();
 
-        let searchTerm = query.current.value;
-        // if (searchTerm) {
-        //     // const url = "http://localhost:8081/job/search?query=" + searchTerm;
-        //     setPageNumber(0);
-        // }
-        axios
-            .get("http://localhost:8081/job/search", {
-                params: { query: searchTerm, offset: pageNumber },
-            })
+        const searchTerm = query != "" ? query : "";
+
+        retrieveSearchedJobs(searchTerm, pageNumber)
             .then((response) => {
-                console.log(response.data);
                 setJobPostData(response.data);
             })
             .catch((e) => {
                 console.log(e);
             });
+        // fetchJobs(pageNumber, searchTerm);
+
+        // query.current = '';
     }
 
-    function fetchSearchJobs1() {
-
-        let searchTerm = query.current.value;
-        if (searchTerm) {
-            // const url = "http://localhost:8081/job/search?query=" + searchTerm;
-            setPageNumber(0);
-        }
-        axios
-            .get("http://localhost:8081/job/search", {
-                params: { query: searchTerm, offset: pageNumber },
-            })
-            .then((response) => {
-                console.log(response.data);
-                setJobPostData(response.data);
-            })
-            .catch((e) => {
-                console.log(e);
-            });
-    }
+    // function fetchSearchJobs1() {
+    //     let searchTerm = query.current.value;
+    //     if (searchTerm) {
+    //         // const url = "http://localhost:8081/job/search?query=" + searchTerm;
+    //         setPageNumber(0);
+    //     }
+    //     axios
+    //         .get("http://localhost:8081/job/search", {
+    //             params: { query: searchTerm, offset: pageNumber },
+    //         })
+    //         .then((response) => {
+    //             console.log(response.data);
+    //             setJobPostData(response.data);
+    //         })
+    //         .catch((e) => {
+    //             console.log(e);
+    //         });
+    // }
 
     useEffect(() => {
-        fetchAllJobs();
-    }, [pageNumber]);
-
-    // useEffect(() => {
-    //     fetchSearchJobs1();
-    // }, [pageNumber]);
-
-    // useEffect(() => {
-    //     fetchSearchJobs();
-    // }, [pageNumber]);
+        // fetchJobs(0, "");
+        retrieveAllJobs(pageNumber)
+            .then((response) => setJobPostData(response.data))
+            .catch((e) => {
+                console.log(e);
+            });
+    }, []);
 
     //temp card data for testing, remove it
     // const cardData = {
@@ -105,7 +106,7 @@ export default function Jobs() {
                         type="text"
                         className="block px-4 py-2 w-full focus:outline-none"
                         placeholder="Search..."
-                        ref={query}
+                        onChange={(e) => setQuery(e.target.value)}
                     />
                     <button className="flex items-center justify-center px-4 border-l">
                         <svg

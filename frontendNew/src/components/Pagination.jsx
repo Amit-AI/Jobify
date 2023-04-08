@@ -1,6 +1,10 @@
 import React from "react";
 
 export default function Pagination({ pageData, setPage }) {
+    function handlePageChange() {}
+
+    //console.log("pageData", pageData)
+
     return (
         <nav className="mx-auto mb-4">
             <ul className="flex">

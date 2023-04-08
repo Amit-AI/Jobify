@@ -2,6 +2,8 @@ package com.site.joblisting.dao;
 
 import java.util.List;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
@@ -22,7 +24,7 @@ public class UserDaoImpl_springDataJpa implements UserDao {
     @Autowired
     UserJobRepository userJobRepository;
 
-
+    private static final Logger logger = LoggerFactory.getLogger(UserDaoImpl_springDataJpa.class);
 
     @Override
     public void deleteUser(int id) {
@@ -41,7 +43,12 @@ public class UserDaoImpl_springDataJpa implements UserDao {
 
     @Override
     public List<User> getAllUsers() {
-        return userRepository.findAll();
+        logger.debug("UserDaoImpl_springDataJpa: : getAllUsers: IN");
+
+        List<User> users = userRepository.findAll();
+
+        logger.debug("UserDaoImpl_springDataJpa: : getAllUsers: OUT");
+        return users;
     }
 
     @Override

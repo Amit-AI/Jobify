@@ -21,7 +21,6 @@ import com.site.joblisting.dao.JobDao;
 import com.site.joblisting.entities.Job;
 
 @RestController
-@CrossOrigin
 @RequestMapping("/job")
 public class JobController {
 

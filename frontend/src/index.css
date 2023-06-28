@@ -1,18 +1,3 @@
-*{
-  margin: 0;
-  padding: 0;
-}
-
-.nav_item{
-  text-decoration: none;
-  color: gray;
-}
-
-.nav_item:hover {
-  color: black;
-}
-
-/* .card{
-  width: 50%;
-  margin: 2rem auto;
-} */
+@tailwind base;
+@tailwind components;
+@tailwind utilities;

@@ -12,6 +12,10 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.web.cors.CorsConfiguration;
+
+import java.util.Arrays;
+import java.util.List;
 
 @Configuration
 public class BasicAuthConfig {
@@ -31,11 +35,18 @@ public class BasicAuthConfig {
         logger.debug("BasicAuthConfig : filterChain : IN");
 
         http
+                .csrf(csrf -> csrf.disable())
+//                .cors(Customizer.withDefaults()) //for allowing any origin's request
+                .cors(cors -> cors.configurationSource(request -> {
+                    CorsConfiguration corsConfiguration = new CorsConfiguration();
+                    corsConfiguration.setAllowedOrigins(List.of("http://localhost:5173")); //origin for the vite+react frontend application
+                    corsConfiguration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE"));
+                    corsConfiguration.setAllowedHeaders(Arrays.asList("Authorization", "Content-Type"));
+                    return corsConfiguration;
+                }))
                 .authorizeHttpRequests(auth -> auth.anyRequest().authenticated())
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
-                .httpBasic(Customizer.withDefaults())
-                .cors().and()
-                .csrf().disable();
+                .httpBasic(Customizer.withDefaults());
 
         logger.debug("BasicAuthConfig : filterChain : OUT");
         return http.build();

@@ -1,14 +1,11 @@
 package com.site.joblisting.entities;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.Size;
+
+import java.util.Objects;
 
 @Entity
 @Table(name = "user")
@@ -34,15 +31,19 @@ public class User {
     @Column(nullable = false)
     private String userEmail;
 
+
     @NotEmpty(message = "Role could not be empty or null.")
     @Column(nullable = false)
     private String userRole;
 
-    @Override
-    public String toString() {
-        return "User [userId=" + userId + ", userName=" + userName + ", userPwd=" + userPwd + ", userEmail=" + userEmail
-                + ", userRole=" + userRole + "]";
+    public User(int userId, String userName, String userPwd, String userEmail, String userRole) {
+        this.userId = userId;
+        this.userName = userName;
+        this.userPwd = userPwd;
+        this.userEmail = userEmail;
+        this.userRole = userRole;
     }
+
 
     public int getUserId() {
         return userId;
@@ -83,5 +84,22 @@ public class User {
     public void setUserRole(String userRole) {
         this.userRole = userRole;
     }
+    @Override
+    public String toString() {
+        return "User [userId=" + userId + ", userName=" + userName + ", userPwd=" + userPwd + ", userEmail=" + userEmail
+                + ", userRole=" + userRole + "]";
+    }
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        User user = (User) o;
+        return userId == user.userId && Objects.equals(userName, user.userName) && Objects.equals(userPwd, user.userPwd) && Objects.equals(userEmail, user.userEmail) && Objects.equals(userRole, user.userRole);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(userId, userName, userPwd, userEmail, userRole);
+    }
 }

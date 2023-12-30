@@ -1,20 +1,17 @@
 package com.site.joblisting.dao;
 
-import java.util.List;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
-import org.springframework.stereotype.Repository;
-
 import com.site.joblisting.entities.Job;
 import com.site.joblisting.entities.UserJob;
 import com.site.joblisting.exceptions.NotFoundException;
 import com.site.joblisting.repositories.JobRepository;
 import com.site.joblisting.repositories.UserJobRepository;
-
 import jakarta.transaction.Transactional;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.stereotype.Repository;
+
+import java.util.List;
 
 @Repository
 @Transactional

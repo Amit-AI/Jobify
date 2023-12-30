@@ -1,16 +1,21 @@
 package com.site.joblisting.dao;
 
-import java.util.List;
-
 import com.site.joblisting.entities.User;
+
+import java.util.List;
 
 public interface UserDao {
 
-    public List<User> getAllUsers();
-    public User getUserById(int id);
-    public void insertUser(User user);
-    public void updateUser(int id, User user);
-    public void deleteUser(int id);
-    public List<Integer> getAllJobIdByUserId(int userId);
-    
+    List<User> getAllUsers();
+
+    User getUserById(int id);
+
+    void insertUser(User user);
+
+    void updateUser(int id, User user);
+
+    void deleteUser(int id);
+
+    List<Integer> getAllJobIdByUserId(int userId);
+
 }

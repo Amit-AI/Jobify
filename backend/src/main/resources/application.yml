@@ -14,6 +14,6 @@ server:
   port: 8081
 
 
-logging:
-  level:
-    com.site.joblisting: INFO
+#logging:
+#  level:
+#    com.site.joblisting: DEBUG

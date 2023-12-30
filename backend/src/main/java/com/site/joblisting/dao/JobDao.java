@@ -1,26 +1,25 @@
 package com.site.joblisting.dao;
 
-import java.util.List;
-
+import com.site.joblisting.entities.Job;
 import org.springframework.data.domain.Page;
 
-import com.site.joblisting.entities.Job;
+import java.util.List;
 
 public interface JobDao {
 
-    public List<Job> getAllPostedJobs();
+    List<Job> getAllPostedJobs();
 
-    public Page<Job> getAllPostedJobsWithPagination(int offset);
+    Page<Job> getAllPostedJobsWithPagination(int offset);
 
-    public Job getJob(int id);
+    Job getJob(int id);
 
-    public void insertJob(Job job);
+    void insertJob(Job job);
 
-    public void updateJob(int id, Job job);
+    void updateJob(int id, Job job);
 
-    public void deleteJob(int id);
+    void deleteJob(int id);
 
-    public void applyJob(int userId, int jobId);
+    void applyJob(int userId, int jobId);
 
-    public Page<Job> searchJobs(String query, int offset);
+    Page<Job> searchJobs(String query, int offset);
 }

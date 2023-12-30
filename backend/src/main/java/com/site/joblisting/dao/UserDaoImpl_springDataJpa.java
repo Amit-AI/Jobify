@@ -1,18 +1,16 @@
 package com.site.joblisting.dao;
 
-import java.util.List;
-
+import com.site.joblisting.entities.User;
+import com.site.joblisting.exceptions.NotFoundException;
+import com.site.joblisting.repositories.UserJobRepository;
+import com.site.joblisting.repositories.UserRepository;
+import jakarta.transaction.Transactional;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
-import com.site.joblisting.entities.User;
-import com.site.joblisting.exceptions.NotFoundException;
-import com.site.joblisting.repositories.UserJobRepository;
-import com.site.joblisting.repositories.UserRepository;
-
-import jakarta.transaction.Transactional;
+import java.util.List;
 
 @Repository
 @Transactional
@@ -31,14 +29,12 @@ public class UserDaoImpl_springDataJpa implements UserDao {
 
         //cleaning up jobs which this user applied to
         userJobRepository.deleteJobWhenUserDeleted(id);
-        
+
         try {
             userRepository.deleteById(id);
         } catch (Exception e) {
             throw new NotFoundException("User Not Found With ID: " + id);
         }
-        
-        
     }
 
     @Override
@@ -77,7 +73,7 @@ public class UserDaoImpl_springDataJpa implements UserDao {
     }
 
     @Override
-    public List<Integer> getAllJobIdByUserId(int userId){
+    public List<Integer> getAllJobIdByUserId(int userId) {
         return userJobRepository.findAllJobIdByUserId(userId);
     }
 

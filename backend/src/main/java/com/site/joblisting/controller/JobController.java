@@ -1,24 +1,14 @@
 package com.site.joblisting.controller;
 
-import java.util.List;
-
+import com.site.joblisting.dao.JobDao;
+import com.site.joblisting.entities.Job;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
-import com.site.joblisting.dao.JobDao;
-import com.site.joblisting.entities.Job;
+import java.util.List;
 
 @RestController
 @RequestMapping("/job")
@@ -32,7 +22,7 @@ public class JobController {
         return new ResponseEntity<>(jobDao.getAllPostedJobs(), HttpStatus.OK);
     }
 
-    @GetMapping(params = { "offset" })
+    @GetMapping(params = {"offset"})
     public ResponseEntity<Page<Job>> getAllJobsWithPagination(@RequestParam int offset) {
         return new ResponseEntity<>(jobDao.getAllPostedJobsWithPagination(offset), HttpStatus.OK);
     }
@@ -66,6 +56,7 @@ public class JobController {
         return new ResponseEntity<>("Job applied successfully!!", HttpStatus.CREATED);
     }
 
+    // TODO: fix this searchJob API
     @GetMapping("/search")
     public ResponseEntity<Page<Job>> searchJobs(@RequestParam("query") String query, @RequestParam("offset") int offset) {
 

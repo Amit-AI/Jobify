@@ -1,7 +1,10 @@
 package com.site.joblisting.controller;
 
-import java.util.List;
-
+import com.site.joblisting.dao.JobDao;
+import com.site.joblisting.dao.UserDao;
+import com.site.joblisting.dto.UserJobDTO;
+import com.site.joblisting.entities.Job;
+import com.site.joblisting.entities.User;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,11 +13,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
-import com.site.joblisting.dao.JobDao;
-import com.site.joblisting.dao.UserDao;
-import com.site.joblisting.dto.UserJobDTO;
-import com.site.joblisting.entities.Job;
-import com.site.joblisting.entities.User;
+import java.util.List;
 
 @RestController
 @RequestMapping("/user")
@@ -27,6 +26,7 @@ public class UserController {
     JobDao jobDao;
 
     private static final Logger logger = LoggerFactory.getLogger(UserController.class);
+
     @GetMapping
     public ResponseEntity<List<User>> getAllUsers() {
         logger.debug("UserController: getAllUsers : IN");
@@ -78,7 +78,7 @@ public class UserController {
     }
 
     @GetMapping("/jobs/{userId}")
-    public ResponseEntity<UserJobDTO> getUserAppliedJobs(@PathVariable int userId){
+    public ResponseEntity<UserJobDTO> getUserAppliedJobs(@PathVariable int userId) {
         logger.debug("UserController: getUserAppliedJobs : IN");
 
         User user = userDao.getUserById(userId);

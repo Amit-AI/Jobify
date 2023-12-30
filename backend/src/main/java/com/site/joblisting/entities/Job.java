@@ -1,15 +1,9 @@
 package com.site.joblisting.entities;
 
+import jakarta.persistence.*;
+
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
-
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.Lob;
-import jakarta.persistence.Table;
 
 @Entity
 @Table(name = "jobs")
@@ -34,7 +28,7 @@ public class Job {
     private String jobDescription;
 
     @Column(nullable = false)
-    private String jobPosted = setJobPosted();
+    private final String jobPosted = setJobPosted();
 
     @Column(nullable = false)
     private String jobPostExpires; // date
@@ -89,9 +83,7 @@ public class Job {
     public String setJobPosted() {
         LocalDate localDate = LocalDate.now();
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
-        String dateString = localDate.format(formatter);
-        
-        return dateString;
+        return localDate.format(formatter);
     }
 
     public String getJobPostExpires() {

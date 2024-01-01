@@ -1,41 +1,52 @@
 package com.site.joblisting.exceptions;
 
+import lombok.Getter;
+
+import java.time.LocalDateTime;
+
+@Getter
 public class ExceptionResponse {
 
-    String timeStamp;
-    String error;
-    String status;
-    String path;
+    private final String timeStamp;
+    private final String error;
+    private final String status;
+    private final String path;
 
-    public String getTimeStamp() {
-        return timeStamp;
-    }
-
-    public void setTimeStamp(String timeStamp) {
+    private ExceptionResponse(String timeStamp, String error, String status, String path) {
         this.timeStamp = timeStamp;
-    }
-
-    public String getError() {
-        return error;
-    }
-
-    public void setError(String error) {
         this.error = error;
-    }
-
-    public String getStatus() {
-        return status;
-    }
-
-    public void setStatus(String status) {
         this.status = status;
-    }
-
-    public String getPath() {
-        return path;
-    }
-
-    public void setPath(String path) {
         this.path = path;
+    }
+
+    public static ExceptionResponseBuilder builder() {
+        return new ExceptionResponseBuilder();
+    }
+
+
+    public static class ExceptionResponseBuilder {
+        private final String timeStamp = LocalDateTime.now().toString();
+        private String error;
+        private String status;
+        private String path;
+
+        public ExceptionResponseBuilder error(String errorMessage) {
+            this.error = errorMessage;
+            return this;
+        }
+
+        public ExceptionResponseBuilder status(String status) {
+            this.status = status;
+            return this;
+        }
+
+        public ExceptionResponseBuilder path(String path) {
+            this.path = path;
+            return this;
+        }
+
+        public ExceptionResponse build() {
+            return new ExceptionResponse(this.timeStamp, this.error, this.status, this.path);
+        }
     }
 }

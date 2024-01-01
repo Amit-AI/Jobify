@@ -23,18 +23,8 @@ public class JobDaoImpl_springDataJPA implements JobDao {
     @Autowired
     UserJobRepository userJobRepository;
 
-    private static final int pageSize = 2;
+    private static final int jobsPerPage = 2;
 
-    @Override
-    public void deleteJob(int id) {
-        try {
-            jobRepository.deleteById(id);
-        } catch (Exception e) {
-            throw new NotFoundException("User Not Found With ID: " + id);
-        }
-
-        userJobRepository.deleteUserWhenJobDeleted(id);
-    }
 
     @Override
     public List<Job> getAllPostedJobs() {
@@ -43,14 +33,15 @@ public class JobDaoImpl_springDataJPA implements JobDao {
     }
 
     @Override
-    public Page<Job> getAllPostedJobsWithPagination(int offset) {
-        return jobRepository.findAll(PageRequest.of(offset, pageSize));
+    public Page<Job> getAllPostedJobsWithPagination(int pageNumber) {
+        return jobRepository.findAll(PageRequest.of(pageNumber, jobsPerPage));
     }
 
     @Override
     public Job getJob(int id) {
 
-        return jobRepository.findById(id).get();
+        return jobRepository.findById(id)
+                .orElseThrow(() -> new NotFoundException("Job not found with ID: "+id));
     }
 
     @Override
@@ -63,7 +54,8 @@ public class JobDaoImpl_springDataJPA implements JobDao {
     @Override
     public void updateJob(int id, Job job) {
 
-        Job tempJob = jobRepository.findById(id).get();
+        Job tempJob = jobRepository.findById(id)
+                .orElseThrow(() -> new NotFoundException("Job not found with ID: "+id));
 
         tempJob.setJobRole(job.getJobRole());
         tempJob.setCompanyName(job.getCompanyName());
@@ -77,6 +69,17 @@ public class JobDaoImpl_springDataJPA implements JobDao {
     }
 
     @Override
+    public void deleteJob(int id) {
+        try {
+            jobRepository.deleteById(id);
+        } catch (Exception e) {
+            throw new NotFoundException("User Not Found With ID: " + id);
+        }
+
+        userJobRepository.deleteUserAppliedJob(id);
+    }
+
+    @Override
     public void applyJob(int userId, int jobId) {
         UserJob userJob = new UserJob();
         userJob.setUserId(userId);
@@ -87,7 +90,23 @@ public class JobDaoImpl_springDataJPA implements JobDao {
     }
 
     @Override
-    public Page<Job> searchJobs(String query, int offset) {
-        return jobRepository.searchJobs(query, PageRequest.of(offset, pageSize));
+    public void unApplyJob(int userId, int jobId) {
+        List<Integer> allJobIdByUserId = userJobRepository.findAllJobIdByUserId(userId);
+
+        if (allJobIdByUserId.isEmpty()) {
+            throw new NotFoundException("No Jobs applied by User with ID: " + userId);
+        }
+
+        allJobIdByUserId.stream()
+                .filter(id -> id == jobId)
+                .findFirst()
+                .orElseThrow(() -> new NotFoundException("User haven't applied to Job with ID: " + jobId));
+
+        userJobRepository.unapplyJobForUser(userId, jobId);
+    }
+
+    @Override
+    public Page<Job> searchJobs(String query, int pageNumber) {
+        return jobRepository.searchJobs(query, PageRequest.of(pageNumber, jobsPerPage));
     }
 }

@@ -11,7 +11,6 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
-import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -19,13 +18,16 @@ import java.util.List;
 public class RestExceptionHandler extends ResponseEntityExceptionHandler {
 
     @ExceptionHandler(value = {NotFoundException.class})
-    public ResponseEntity<ExceptionResponse> handleExceptions(Exception exception, WebRequest request) {
-        ExceptionResponse exceptionResponse = new ExceptionResponse();
-        exceptionResponse.setError(exception.getMessage());
-        exceptionResponse.setStatus(HttpStatus.NOT_FOUND.name());
-        exceptionResponse.setTimeStamp(LocalDate.now().toString());
-        exceptionResponse.setPath(request.getDescription(false));
-        return new ResponseEntity<>(exceptionResponse, HttpStatus.BAD_REQUEST);
+    public ResponseEntity<ExceptionResponse> handleNotFoundExceptions(Exception exception, WebRequest request) {
+        ExceptionResponse exceptionResponse = ExceptionResponse.builder()
+                .error(exception.getMessage())
+                .status(HttpStatus.NOT_FOUND.name())
+                .path(request.getDescription(false))
+                .build();
+
+        exception.printStackTrace();
+
+        return ResponseEntity.badRequest().body(exceptionResponse);
     }
 
     @Override
@@ -38,11 +40,25 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler {
             messageList.add(err.getDefaultMessage());
         }
 
-        ExceptionResponse exceptionResponse = new ExceptionResponse();
-        exceptionResponse.setError(String.join(", ", messageList));
-        exceptionResponse.setStatus(HttpStatus.BAD_REQUEST.name());
-        exceptionResponse.setTimeStamp(LocalDate.now().toString());
-        exceptionResponse.setPath(request.getDescription(false));
-        return new ResponseEntity<>(exceptionResponse, HttpStatus.BAD_REQUEST);
+        ExceptionResponse exceptionResponse = ExceptionResponse.builder()
+                .error(String.join(", ", messageList))
+                .status(HttpStatus.BAD_REQUEST.name())
+                .path(request.getDescription(false))
+                .build();
+
+        return ResponseEntity.badRequest().body(exceptionResponse);
+    }
+
+    @ExceptionHandler(UserAlreadyExistsException.class)
+    public ResponseEntity<ExceptionResponse> userAlreadyExistsException(UserAlreadyExistsException ex, WebRequest request) {
+        ExceptionResponse exceptionResponse = ExceptionResponse.builder()
+                .error(ex.getMessage())
+                .status(HttpStatus.BAD_REQUEST.name())
+                .path(request.getDescription(false))
+                .build();
+
+        ex.printStackTrace();
+
+        return ResponseEntity.badRequest().body(exceptionResponse);
     }
 }

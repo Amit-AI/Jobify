@@ -16,7 +16,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/user")
+@RequestMapping("/users")
 public class UserController {
 
     @Autowired
@@ -82,11 +82,11 @@ public class UserController {
         logger.debug("UserController: getUserAppliedJobs : IN");
 
         User user = userDao.getUserById(userId);
-        String userName = user.getUserName();
-        List<Job> jobs = userDao.getAllJobIdByUserId(userId).stream().map(id -> jobDao.getJob(id)).toList();
+        String email = user.getUserEmail();
+        List<Job> jobs = userDao.getAllUserAppliedJobs(userId);
 
         logger.debug("UserController: getUserAppliedJobs : OUT");
-        return ResponseEntity.ok(new UserJobDTO(userName, jobs));
+        return ResponseEntity.ok(new UserJobDTO(email, jobs));
     }
 
 }

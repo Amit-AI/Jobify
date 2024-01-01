@@ -21,5 +21,7 @@ public interface JobDao {
 
     void applyJob(int userId, int jobId);
 
+    void unApplyJob(int userId, int jobId);
+
     Page<Job> searchJobs(String query, int offset);
 }

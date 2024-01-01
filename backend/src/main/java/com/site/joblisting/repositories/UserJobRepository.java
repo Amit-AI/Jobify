@@ -21,5 +21,10 @@ public interface UserJobRepository extends JpaRepository<UserJob, Integer> {
     @Transactional
     @Modifying
     @Query("Delete from UserJob u where u.jobId=?1")
-    void deleteUserWhenJobDeleted(int jobId);
+    void deleteUserAppliedJob(int jobId);
+
+    @Transactional
+    @Modifying
+    @Query("DELETE FROM UserJob u WHERE u.userId=?1 AND u.jobId=?2")
+    void unapplyJobForUser(int userId, int jobId);
 }

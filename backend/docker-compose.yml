@@ -12,18 +12,16 @@ services:
     volumes:
       - mysql-data:/var/lib/mysql
 
-#enable below if you wish to run both (db & app) at the same time
-#
-#  joblisting:
-#    image: ztrixx/joblisting:0.0.1-SNAPSHOT
-#    depends_on:
-#      - mysql-db
-#    environment:
-#      SPRING_DATASOURCE_URL: jdbc:mysql://mysql-db:3306/joblistingdb
-#      SPRING_DATASOURCE_USERNAME: root
-#      SPRING_DATASOURCE_PASSWORD: root
-#    ports:
-#      - "8081:8081"
+  joblisting:
+    image: ztrixx/joblisting:0.0.1-SNAPSHOT
+    depends_on:
+      - mysql-db
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:mysql://mysql-db:3306/joblistingdb
+      SPRING_DATASOURCE_USERNAME: root
+      SPRING_DATASOURCE_PASSWORD: root
+    ports:
+      - "8081:8081"
 
 
 volumes:

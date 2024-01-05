@@ -1,5 +1,6 @@
-package com.site.joblisting.dao;
+package com.site.joblisting.dao.impl;
 
+import com.site.joblisting.dao.JobDao;
 import com.site.joblisting.entities.Job;
 import com.site.joblisting.entities.UserJob;
 import com.site.joblisting.exceptions.NotFoundException;
@@ -15,7 +16,7 @@ import java.util.List;
 
 @Repository
 @Transactional
-public class JobDaoImpl_springDataJPA implements JobDao {
+public class JobDaoImpl implements JobDao {
 
     @Autowired
     JobRepository jobRepository;

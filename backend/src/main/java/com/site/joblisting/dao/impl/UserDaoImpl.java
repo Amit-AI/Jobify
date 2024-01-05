@@ -1,5 +1,8 @@
-package com.site.joblisting.dao;
+package com.site.joblisting.dao.impl;
 
+import com.site.joblisting.dao.JobDao;
+import com.site.joblisting.dao.UserDao;
+import com.site.joblisting.dto.UserResponseDTO;
 import com.site.joblisting.entities.Job;
 import com.site.joblisting.entities.User;
 import com.site.joblisting.exceptions.NotFoundException;
@@ -9,6 +12,7 @@ import com.site.joblisting.repositories.UserRepository;
 import jakarta.transaction.Transactional;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -17,7 +21,7 @@ import java.util.Optional;
 @Slf4j
 @Repository
 @Transactional
-public class UserDaoImpl_springDataJpa implements UserDao {
+public class UserDaoImpl implements UserDao {
 
     @Autowired
     UserRepository userRepository;
@@ -28,21 +32,40 @@ public class UserDaoImpl_springDataJpa implements UserDao {
     @Autowired
     JobDao jobDao;
 
+    @Autowired
+    private PasswordEncoder passwordEncoder;
+
 
     @Override
-    public List<User> getAllUsers() {
+    public List<UserResponseDTO> getAllUsers() {
         log.debug("UserDaoImpl_springDataJpa: : getAllUsers: IN");
 
         List<User> users = userRepository.findAll();
 
+        List<UserResponseDTO> userDTOs = users.stream().map(user ->
+            UserResponseDTO.builder()
+                    .id(user.getUserId())
+                    .name(user.getUserName())
+                    .email(user.getUserEmail())
+                    .role(user.getUserRole())
+                    .build()
+        ).toList();
+
         log.debug("UserDaoImpl_springDataJpa: : getAllUsers: OUT");
-        return users;
+        return userDTOs;
     }
 
     @Override
-    public User getUserById(int id) {
-        return userRepository.findById(id)
+    public UserResponseDTO getUserById(int id) {
+        User userDb = userRepository.findById(id)
                 .orElseThrow(() -> new NotFoundException("User Not Found With ID: " + id));
+
+        return UserResponseDTO.builder()
+                .id(userDb.getUserId())
+                .name(userDb.getUserName())
+                .email(userDb.getUserEmail())
+                .role(userDb.getUserRole())
+                .build();
     }
 
     @Override
@@ -58,6 +81,7 @@ public class UserDaoImpl_springDataJpa implements UserDao {
         if (userDetails.isPresent()) {
             throw new UserAlreadyExistsException("User Already Exists!");
         } else {
+            user.setUserPwd(passwordEncoder.encode(user.getUserPwd()));
             userRepository.save(user);
         }
 
@@ -67,7 +91,7 @@ public class UserDaoImpl_springDataJpa implements UserDao {
 
     @Override
     public void updateUser(int id, User user) {
-        User tempUser = getUserById(id);
+        User tempUser = userRepository.findById(id).orElseThrow(() -> new NotFoundException("User not found!"));
 
         tempUser.setUserName(user.getUserName());
         tempUser.setUserPwd(user.getUserPwd());

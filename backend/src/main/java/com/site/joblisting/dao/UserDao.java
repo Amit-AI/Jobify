@@ -1,5 +1,6 @@
 package com.site.joblisting.dao;
 
+import com.site.joblisting.dto.UserResponseDTO;
 import com.site.joblisting.entities.Job;
 import com.site.joblisting.entities.User;
 
@@ -7,9 +8,9 @@ import java.util.List;
 
 public interface UserDao {
 
-    List<User> getAllUsers();
+    List<UserResponseDTO> getAllUsers();
 
-    User getUserById(int id);
+    UserResponseDTO getUserById(int id);
 
     void insertUser(User user);
 

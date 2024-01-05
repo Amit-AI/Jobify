@@ -3,6 +3,7 @@ package com.site.joblisting.controller;
 import com.site.joblisting.dao.JobDao;
 import com.site.joblisting.dao.UserDao;
 import com.site.joblisting.dto.UserJobDTO;
+import com.site.joblisting.dto.UserResponseDTO;
 import com.site.joblisting.entities.Job;
 import com.site.joblisting.entities.User;
 import org.slf4j.Logger;
@@ -20,28 +21,28 @@ import java.util.List;
 public class UserController {
 
     @Autowired
-    UserDao userDao;
+    private UserDao userDao;
 
     @Autowired
-    JobDao jobDao;
+    private JobDao jobDao;
 
     private static final Logger logger = LoggerFactory.getLogger(UserController.class);
 
     @GetMapping
-    public ResponseEntity<List<User>> getAllUsers() {
+    public ResponseEntity<List<UserResponseDTO>> getAllUsers() {
         logger.debug("UserController: getAllUsers : IN");
 
-        List<User> users = userDao.getAllUsers();
+        List<UserResponseDTO> users = userDao.getAllUsers();
 
         logger.debug("UserController: getAllUsers : OUT");
         return ResponseEntity.ok(users);
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<User> getUser(@PathVariable int id) {
+    public ResponseEntity<UserResponseDTO> getUser(@PathVariable int id) {
         logger.debug("UserController: getUser : IN");
 
-        User user = userDao.getUserById(id);
+        UserResponseDTO user = userDao.getUserById(id);
 
         logger.debug("UserController: getUser : OUT");
         return ResponseEntity.ok(user);
@@ -81,8 +82,8 @@ public class UserController {
     public ResponseEntity<UserJobDTO> getUserAppliedJobs(@PathVariable int userId) {
         logger.debug("UserController: getUserAppliedJobs : IN");
 
-        User user = userDao.getUserById(userId);
-        String email = user.getUserEmail();
+        UserResponseDTO user = userDao.getUserById(userId);
+        String email = user.getEmail();
         List<Job> jobs = userDao.getAllUserAppliedJobs(userId);
 
         logger.debug("UserController: getUserAppliedJobs : OUT");

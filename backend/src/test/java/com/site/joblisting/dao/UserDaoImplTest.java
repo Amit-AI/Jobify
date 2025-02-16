@@ -2,7 +2,7 @@ package com.site.joblisting.dao;
 
 import com.site.joblisting.dao.impl.UserDaoImpl;
 import com.site.joblisting.dto.UserResponseDTO;
-import com.site.joblisting.entities.User;
+import com.site.joblisting.entities.Users;
 import com.site.joblisting.repositories.UserJobRepository;
 import com.site.joblisting.repositories.UserRepository;
 import com.site.joblisting.security.UserRole;
@@ -18,7 +18,7 @@ import java.util.Optional;
 import static org.mockito.Mockito.when;
 
 @SpringBootTest
-public class UserDaoImpl_Test {
+public class UserDaoImplTest {
 
     @Mock
     UserRepository userRepository;
@@ -32,7 +32,7 @@ public class UserDaoImpl_Test {
     @Test
     public void getAllUsersTest() {
 
-        when(userRepository.findAll()).thenReturn(List.of(new User(1, "user", "pwd123", "user@admin.com", UserRole.USER.getAuthority())));
+        when(userRepository.findAll()).thenReturn(List.of(new Users(1, "user", "pwd123", "user@admin.com", UserRole.USER.getAuthority())));
 
         List<UserResponseDTO> actual = userDaoImplSpringDataJpa.getAllUsers();
 
@@ -43,7 +43,7 @@ public class UserDaoImpl_Test {
 
     @Test
     public void getAllJobIdByUserIdTest() {
-        when(userRepository.findById(1)).thenReturn(Optional.of(new User(1, "user", "pwd123", "user@admin.com", UserRole.USER.getAuthority())));
+        when(userRepository.findById(1)).thenReturn(Optional.of(new Users(1, "user", "pwd123", "user@admin.com", UserRole.USER.getAuthority())));
         when(userJobRepository.findAllJobIdByUserId(1)).thenReturn(List.of(1, 2, 3));
 
         List<Integer> actual = userDaoImplSpringDataJpa.getAllJobIdByUserId(1);

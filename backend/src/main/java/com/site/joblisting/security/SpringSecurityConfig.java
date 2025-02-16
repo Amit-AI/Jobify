@@ -1,31 +1,34 @@
 package com.site.joblisting.security;
 
+import com.site.joblisting.security.jwt.JwtFilter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
-import org.springframework.security.config.Customizer;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
+import org.springframework.security.config.annotation.web.configurers.HeadersConfigurer;
 import org.springframework.security.config.http.SessionCreationPolicy;
-import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.web.cors.CorsConfiguration;
 
 import java.util.List;
 
 @Configuration
-public class BasicAuthConfig {
+@EnableWebSecurity
+public class SpringSecurityConfig {
 
-    private static final Logger logger = LoggerFactory.getLogger(BasicAuthConfig.class);
+    private static final Logger logger = LoggerFactory.getLogger(SpringSecurityConfig.class);
 
-    @Bean
-    public PasswordEncoder passwordEncoder() {
-        return new BCryptPasswordEncoder();
-    }
+    @Autowired
+    private JwtFilter jwtFilter;
 
     /**
      * Redefined SecurityFilterChain to override default spring security Configuration for Authenticated & Authorization
@@ -37,7 +40,7 @@ public class BasicAuthConfig {
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
 
-        logger.debug("BasicAuthConfig : filterChain : IN");
+        logger.debug("SpringSecurityConfig : filterChain : IN");
 
         http
                 .csrf(AbstractHttpConfigurer::disable)
@@ -49,41 +52,26 @@ public class BasicAuthConfig {
                     corsConfiguration.setAllowedHeaders(List.of("Authorization", "Content-Type"));
                     return corsConfiguration;
                 }))
-                .authorizeHttpRequests(auth -> auth.anyRequest().authenticated())
+                .authorizeHttpRequests(auth -> auth
+                        .requestMatchers("/h2-console/**", "/auth/**").permitAll()
+                        .requestMatchers("*/admin/**").hasRole("ADMIN")
+                        .anyRequest().authenticated())
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
-                .httpBasic(Customizer.withDefaults());
+                //.httpBasic(Customizer.withDefaults())
+                .headers(header -> header.frameOptions(HeadersConfigurer.FrameOptionsConfig::sameOrigin))
+                .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class);
 
-        logger.debug("BasicAuthConfig : filterChain : OUT");
+        logger.debug("SpringSecurityConfig : filterChain : OUT");
         return http.build();
     }
 
-
-    /**
-     * //Redefined UserDetailsService to override default spring security Configuration, and storing authorized user details in DB
-     *
-     * @return returns or saves user details that are authorized to use the application
-     */
     @Bean
-    public DaoAuthenticationProvider daoAuthenticationProvider(UserDetailsService userDetailsService) {
-
-        DaoAuthenticationProvider daoAuthenticationProvider = new DaoAuthenticationProvider();
-        daoAuthenticationProvider.setUserDetailsService(userDetailsService);
-        daoAuthenticationProvider.setPasswordEncoder(passwordEncoder());
-
-        return daoAuthenticationProvider;
+    public PasswordEncoder passwordEncoder() {
+        return new BCryptPasswordEncoder();
     }
 
-
-   /* Commented below because, updated the UserDetailsService to fetch User from DataBase
-
-   @Bean
-    public UserDetailsService userDetailsService() {
-        logger.debug("BasicAuthConfig : userDetailsService : IN");
-
-        UserDetails admin = User.withUsername("amit@admin.com").password("{noop}1234").roles(UserRole.ADMIN.getAuthority()).build();
-        UserDetails user = User.withUsername("osama@user.com").password("{noop}1234").roles(UserRole.USER.getAuthority()).build();
-
-        logger.debug("BasicAuthConfig : userDetailsService : OUT");
-        return new InMemoryUserDetailsManager(admin, user);
-    }*/
+    @Bean
+    public AuthenticationManager authenticationManager(AuthenticationConfiguration authenticationConfiguration) throws Exception {
+        return authenticationConfiguration.getAuthenticationManager();
+    }
 }

@@ -1,28 +1,34 @@
 version: "3.9"
 
 services:
-  mysql-db:
-    image: mysql:latest
-    restart: always
-    environment:
-      MYSQL_ROOT_PASSWORD: root
-      MYSQL_DATABASE: joblistingdb
-    ports:
-      - "3306:3306"
-    volumes:
-      - mysql-data:/var/lib/mysql
+#  mysql-db:
+#    image: mysql:latest
+#    restart: always
+#    environment:
+#      MYSQL_ROOT_PASSWORD: root
+#      MYSQL_DATABASE: joblistingdb
+#    ports:
+#      - "3306:3306"
+#    volumes:
+#      - mysql-data:/var/lib/mysql
 
   joblisting:
-    image: ztrixx/joblisting:0.0.1-SNAPSHOT
-    depends_on:
-      - mysql-db
-    environment:
-      SPRING_DATASOURCE_URL: jdbc:mysql://mysql-db:3306/joblistingdb
-      SPRING_DATASOURCE_USERNAME: root
-      SPRING_DATASOURCE_PASSWORD: root
+#    image: ztrixx/joblisting:0.0.1-SNAPSHOT
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: joblisting:latest
+    container_name: joblisting
+
+#    depends_on:
+#      - mysql-db
+#    environment:
+#      SPRING_DATASOURCE_URL: jdbc:mysql://mysql-db:3306/joblistingdb
+#      SPRING_DATASOURCE_USERNAME: root
+#      SPRING_DATASOURCE_PASSWORD: root
     ports:
       - "8081:8081"
 
 
-volumes:
-  mysql-data:
+#volumes:
+#  mysql-data:

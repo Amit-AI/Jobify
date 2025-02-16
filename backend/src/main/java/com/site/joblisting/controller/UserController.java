@@ -4,8 +4,8 @@ import com.site.joblisting.dao.JobDao;
 import com.site.joblisting.dao.UserDao;
 import com.site.joblisting.dto.UserJobDTO;
 import com.site.joblisting.dto.UserResponseDTO;
-import com.site.joblisting.entities.Job;
-import com.site.joblisting.entities.User;
+import com.site.joblisting.entities.Jobs;
+import com.site.joblisting.entities.Users;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,7 +28,7 @@ public class UserController {
 
     private static final Logger logger = LoggerFactory.getLogger(UserController.class);
 
-    @GetMapping
+    @GetMapping("/admin/get-all")
     public ResponseEntity<List<UserResponseDTO>> getAllUsers() {
         logger.debug("UserController: getAllUsers : IN");
 
@@ -48,8 +48,8 @@ public class UserController {
         return ResponseEntity.ok(user);
     }
 
-    @PostMapping
-    public ResponseEntity<String> insertUser(@Validated @RequestBody User user) {
+    @PostMapping("/admin/insert")
+    public ResponseEntity<String> insertUser(@Validated @RequestBody Users user) {
         logger.debug("UserController: insertUser : IN");
 
         userDao.insertUser(user);
@@ -59,7 +59,7 @@ public class UserController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<String> updateUser(@PathVariable int id, @RequestBody User user) {
+    public ResponseEntity<String> updateUser(@PathVariable int id, @RequestBody @Validated Users user) {
         logger.debug("UserController: updateUser : IN");
 
         userDao.updateUser(id, user);
@@ -68,7 +68,7 @@ public class UserController {
         return ResponseEntity.ok("User updated successfully!!");
     }
 
-    @DeleteMapping("/{id}")
+    @DeleteMapping("/admin/delete-user/{id}")
     public ResponseEntity<String> deleteUser(@PathVariable int id) {
         logger.debug("UserController: deleteUser : IN");
 
@@ -84,7 +84,7 @@ public class UserController {
 
         UserResponseDTO user = userDao.getUserById(userId);
         String email = user.getEmail();
-        List<Job> jobs = userDao.getAllUserAppliedJobs(userId);
+        List<Jobs> jobs = userDao.getAllUserAppliedJobs(userId);
 
         logger.debug("UserController: getUserAppliedJobs : OUT");
         return ResponseEntity.ok(new UserJobDTO(email, jobs));

@@ -1,17 +1,20 @@
 package com.site.joblisting.entities;
 
 import jakarta.persistence.*;
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.NoArgsConstructor;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 
+@EqualsAndHashCode(callSuper = true)
+@Data
 @AllArgsConstructor
 @NoArgsConstructor
-@Data
 @Entity
-@Table(name = "jobs")
-public class Job {
+public class Jobs extends BaseEntity{
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

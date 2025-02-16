@@ -1,7 +1,7 @@
 package com.site.joblisting.dao.impl;
 
 import com.site.joblisting.dao.JobDao;
-import com.site.joblisting.entities.Job;
+import com.site.joblisting.entities.Jobs;
 import com.site.joblisting.entities.UserJob;
 import com.site.joblisting.exceptions.NotFoundException;
 import com.site.joblisting.repositories.JobRepository;
@@ -28,34 +28,34 @@ public class JobDaoImpl implements JobDao {
 
 
     @Override
-    public List<Job> getAllPostedJobs() {
+    public List<Jobs> getAllPostedJobs() {
 
         return jobRepository.findAll();
     }
 
     @Override
-    public Page<Job> getAllPostedJobsWithPagination(int pageNumber) {
+    public Page<Jobs> getAllPostedJobsWithPagination(int pageNumber) {
         return jobRepository.findAll(PageRequest.of(pageNumber, jobsPerPage));
     }
 
     @Override
-    public Job getJob(int id) {
+    public Jobs getJob(int id) {
 
         return jobRepository.findById(id)
                 .orElseThrow(() -> new NotFoundException("Job not found with ID: "+id));
     }
 
     @Override
-    public void insertJob(Job job) {
+    public void insertJob(Jobs job) {
 
         jobRepository.save(job);
 
     }
 
     @Override
-    public void updateJob(int id, Job job) {
+    public void updateJob(int id, Jobs job) {
 
-        Job tempJob = jobRepository.findById(id)
+        Jobs tempJob = jobRepository.findById(id)
                 .orElseThrow(() -> new NotFoundException("Job not found with ID: "+id));
 
         tempJob.setJobRole(job.getJobRole());
@@ -107,7 +107,7 @@ public class JobDaoImpl implements JobDao {
     }
 
     @Override
-    public Page<Job> searchJobs(String query, int pageNumber) {
+    public Page<Jobs> searchJobs(String query, int pageNumber) {
         return jobRepository.searchJobs(query, PageRequest.of(pageNumber, jobsPerPage));
     }
 }

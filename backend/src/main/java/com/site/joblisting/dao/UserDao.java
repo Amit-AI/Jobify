@@ -1,8 +1,8 @@
 package com.site.joblisting.dao;
 
 import com.site.joblisting.dto.UserResponseDTO;
-import com.site.joblisting.entities.Job;
-import com.site.joblisting.entities.User;
+import com.site.joblisting.entities.Jobs;
+import com.site.joblisting.entities.Users;
 
 import java.util.List;
 
@@ -12,16 +12,16 @@ public interface UserDao {
 
     UserResponseDTO getUserById(int id);
 
-    void insertUser(User user);
+    void insertUser(Users user);
 
-    void updateUser(int id, User user);
+    void updateUser(int id, Users user);
 
     void deleteUser(int id);
 
     List<Integer> getAllJobIdByUserId(int userId);
 
-    List<Job> getAllUserAppliedJobs(int userId);
+    List<Jobs> getAllUserAppliedJobs(int userId);
 
-    User findByUserEmail(String userEmail);
+    Users findByUserEmail(String userEmail);
 
 }

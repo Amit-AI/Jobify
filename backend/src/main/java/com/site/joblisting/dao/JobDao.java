@@ -1,21 +1,21 @@
 package com.site.joblisting.dao;
 
-import com.site.joblisting.entities.Job;
+import com.site.joblisting.entities.Jobs;
 import org.springframework.data.domain.Page;
 
 import java.util.List;
 
 public interface JobDao {
 
-    List<Job> getAllPostedJobs();
+    List<Jobs> getAllPostedJobs();
 
-    Page<Job> getAllPostedJobsWithPagination(int offset);
+    Page<Jobs> getAllPostedJobsWithPagination(int offset);
 
-    Job getJob(int id);
+    Jobs getJob(int id);
 
-    void insertJob(Job job);
+    void insertJob(Jobs job);
 
-    void updateJob(int id, Job job);
+    void updateJob(int id, Jobs job);
 
     void deleteJob(int id);
 
@@ -23,5 +23,5 @@ public interface JobDao {
 
     void unApplyJob(int userId, int jobId);
 
-    Page<Job> searchJobs(String query, int offset);
+    Page<Jobs> searchJobs(String query, int offset);
 }

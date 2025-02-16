@@ -3,12 +3,13 @@ package com.site.joblisting.dao.impl;
 import com.site.joblisting.dao.JobDao;
 import com.site.joblisting.dao.UserDao;
 import com.site.joblisting.dto.UserResponseDTO;
-import com.site.joblisting.entities.Job;
-import com.site.joblisting.entities.User;
+import com.site.joblisting.entities.Jobs;
+import com.site.joblisting.entities.Users;
 import com.site.joblisting.exceptions.NotFoundException;
 import com.site.joblisting.exceptions.UserAlreadyExistsException;
 import com.site.joblisting.repositories.UserJobRepository;
 import com.site.joblisting.repositories.UserRepository;
+import com.site.joblisting.security.UserRole;
 import jakarta.transaction.Transactional;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,13 +25,13 @@ import java.util.Optional;
 public class UserDaoImpl implements UserDao {
 
     @Autowired
-    UserRepository userRepository;
+    private UserRepository userRepository;
 
     @Autowired
-    UserJobRepository userJobRepository;
+    private UserJobRepository userJobRepository;
 
     @Autowired
-    JobDao jobDao;
+    private JobDao jobDao;
 
     @Autowired
     private PasswordEncoder passwordEncoder;
@@ -40,7 +41,7 @@ public class UserDaoImpl implements UserDao {
     public List<UserResponseDTO> getAllUsers() {
         log.debug("UserDaoImpl_springDataJpa: : getAllUsers: IN");
 
-        List<User> users = userRepository.findAll();
+        List<Users> users = userRepository.findAll();
 
         List<UserResponseDTO> userDTOs = users.stream().map(user ->
             UserResponseDTO.builder()
@@ -57,7 +58,7 @@ public class UserDaoImpl implements UserDao {
 
     @Override
     public UserResponseDTO getUserById(int id) {
-        User userDb = userRepository.findById(id)
+        Users userDb = userRepository.findById(id)
                 .orElseThrow(() -> new NotFoundException("User Not Found With ID: " + id));
 
         return UserResponseDTO.builder()
@@ -69,19 +70,22 @@ public class UserDaoImpl implements UserDao {
     }
 
     @Override
-    public User findByUserEmail(String userEmail) {
+    public Users findByUserEmail(String userEmail) {
         return userRepository.findByUserEmail(userEmail)
                 .orElseThrow(() -> new NotFoundException("User Not Found with email: " + userEmail));
     }
 
     @Override
-    public void insertUser(User user) {
-        Optional<User> userDetails = userRepository.findByUserEmail(user.getUserEmail());
+    public void insertUser(Users user) {
+        Optional<Users> userDetails = userRepository.findByUserEmail(user.getUserEmail());
 
         if (userDetails.isPresent()) {
             throw new UserAlreadyExistsException("User Already Exists!");
         } else {
             user.setUserPwd(passwordEncoder.encode(user.getUserPwd()));
+            if(user.getUserRole()==null) {
+                user.setUserRole(UserRole.USER.getAuthority());
+            }
             userRepository.save(user);
         }
 
@@ -90,8 +94,8 @@ public class UserDaoImpl implements UserDao {
     }
 
     @Override
-    public void updateUser(int id, User user) {
-        User tempUser = userRepository.findById(id).orElseThrow(() -> new NotFoundException("User not found!"));
+    public void updateUser(int id, Users user) {
+        Users tempUser = userRepository.findById(id).orElseThrow(() -> new NotFoundException("User not found!"));
 
         tempUser.setUserName(user.getUserName());
         tempUser.setUserPwd(user.getUserPwd());
@@ -123,7 +127,7 @@ public class UserDaoImpl implements UserDao {
     }
 
     @Override
-    public List<Job> getAllUserAppliedJobs(int userId) {
+    public List<Jobs> getAllUserAppliedJobs(int userId) {
         userRepository.findById(userId)
                 .orElseThrow(() -> new NotFoundException("User not found with ID: " + userId));
 

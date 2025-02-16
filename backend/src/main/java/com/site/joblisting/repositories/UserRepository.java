@@ -1,12 +1,14 @@
 package com.site.joblisting.repositories;
 
-import com.site.joblisting.entities.User;
+import com.site.joblisting.entities.Users;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.stereotype.Repository;
 
 import java.util.Optional;
 
-public interface UserRepository extends JpaRepository<User, Integer> {
+@Repository
+public interface UserRepository extends JpaRepository<Users, Integer> {
     @Query
-    Optional<User> findByUserEmail(String userEmail);
+    Optional<Users> findByUserEmail(String userEmail);
 }

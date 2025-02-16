@@ -1,5 +1,6 @@
 package com.site.joblisting.exceptions;
 
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.HttpStatusCode;
@@ -14,21 +15,9 @@ import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExcep
 import java.util.ArrayList;
 import java.util.List;
 
+@Slf4j
 @ControllerAdvice
 public class RestExceptionHandler extends ResponseEntityExceptionHandler {
-
-    @ExceptionHandler(value = {NotFoundException.class})
-    public ResponseEntity<ExceptionResponse> handleNotFoundExceptions(Exception exception, WebRequest request) {
-        ExceptionResponse exceptionResponse = ExceptionResponse.builder()
-                .error(exception.getMessage())
-                .status(HttpStatus.NOT_FOUND.name())
-                .path(request.getDescription(false))
-                .build();
-
-        exception.printStackTrace();
-
-        return ResponseEntity.badRequest().body(exceptionResponse);
-    }
 
     @Override
     protected ResponseEntity<Object> handleMethodArgumentNotValid(
@@ -49,6 +38,19 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler {
         return ResponseEntity.badRequest().body(exceptionResponse);
     }
 
+    @ExceptionHandler(value = {NotFoundException.class})
+    public ResponseEntity<ExceptionResponse> handleNotFoundExceptions(Exception exception, WebRequest request) {
+        ExceptionResponse exceptionResponse = ExceptionResponse.builder()
+                .error(exception.getMessage())
+                .status(HttpStatus.NOT_FOUND.name())
+                .path(request.getDescription(false))
+                .build();
+
+        log.error("NotFoundException occurred:: " + exception.getMessage());
+
+        return ResponseEntity.badRequest().body(exceptionResponse);
+    }
+
     @ExceptionHandler(UserAlreadyExistsException.class)
     public ResponseEntity<ExceptionResponse> userAlreadyExistsException(UserAlreadyExistsException ex, WebRequest request) {
         ExceptionResponse exceptionResponse = ExceptionResponse.builder()
@@ -57,7 +59,7 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler {
                 .path(request.getDescription(false))
                 .build();
 
-        ex.printStackTrace();
+        log.error("UserAlreadyExistsException occurred:: " + ex.getMessage());
 
         return ResponseEntity.badRequest().body(exceptionResponse);
     }

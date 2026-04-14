@@ -7,3 +7,10 @@ export default async function callBasicAuthService(token) {
         },
     });
 }
+
+export function executeJwtAuthenticationService(email, password) {
+    return apiClient.post("auth/v1/login", {
+        email,
+        password,
+    });
+}

@@ -30,14 +30,16 @@ export default function Jobs() {
     //         });
     // }
 
+    const jobsList = Array.isArray(jobPostData) ? jobPostData : (jobPostData.content || []);
+
     //for pagination purpose
-    let pageData = jobPostData.content?.length
+    let pageData = (!Array.isArray(jobPostData) && jobPostData.content?.length)
         ? {
-              currentPage: jobPostData.number,
-              isFirstPage: jobPostData.first,
-              isLastPage: jobPostData.last,
-              totalPages: jobPostData.totalPages,
-          }
+            currentPage: jobPostData.number,
+            isFirstPage: jobPostData.first,
+            isLastPage: jobPostData.last,
+            totalPages: jobPostData.totalPages,
+        }
         : null;
 
     function fetchSearchJobs(e) {
@@ -121,7 +123,7 @@ export default function Jobs() {
                 </div>
             </form>
             <div className=" w-[90%] sm:container my-10 mx-auto px-4 md:px-12 flex flex-col sm:items-center">
-                {jobPostData.content?.map((item, index) => (
+                {jobsList.map((item, index) => (
                     <JobCard key={index} jobPost={item} />
                 ))}
 
@@ -134,14 +136,14 @@ export default function Jobs() {
                 <JobCard jobPost={cardData} /> */}
 
                 {/* if no data from server, below dummy data will be shown */}
-                {!jobPostData.content?.length ? (
+                {!jobsList.length ? (
                     <p className="text-gray-400">No jobs found</p>
                 ) : (
                     ""
                 )}
             </div>
 
-            {jobPostData.content?.length ? (
+            {pageData ? (
                 <Pagination pageData={pageData} setPage={setPageNumber} />
             ) : (
                 ""

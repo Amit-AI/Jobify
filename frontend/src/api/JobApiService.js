@@ -3,7 +3,7 @@ import apiClient from "./ApiClient";
 export function retrieveAllJobs(pageNumber) {
     console.log("All Jobs Api Called");
 
-    return apiClient.get("/job", {
+    return apiClient.get("/jobs", {
         params: { offset: pageNumber },
     });
 }
